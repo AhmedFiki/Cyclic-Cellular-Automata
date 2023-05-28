@@ -343,10 +343,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1039179812}
   m_HandleRect: {fileID: 1518995363}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 0
+  m_MinValue: 1
+  m_MaxValue: 6
+  m_WholeNumbers: 1
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -930,6 +930,16 @@ MonoBehaviour:
   - {r: 0.11035919, g: 0, b: 1, a: 1}
   - {r: 0, g: 0.6509434, b: 0.42375144, a: 1}
   testCellPos: {x: 4, y: 4}
+  gridSizeSlider: {fileID: 822553685}
+  gridSizeText: {fileID: 1200017550}
+  speedSlider: {fileID: 1298194270}
+  speedText: {fileID: 857275302}
+  statesSlider: {fileID: 312386101}
+  statesText: {fileID: 1393403904}
+  thresholdSlider: {fileID: 1150873932}
+  thresholdText: {fileID: 986006801}
+  rangeSlider: {fileID: 42732743}
+  rangeText: {fileID: 892860614}
 --- !u!4 &294096432
 Transform:
   m_ObjectHideFlags: 0
@@ -1030,10 +1040,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 287757652}
   m_HandleRect: {fileID: 975558554}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 0
+  m_MinValue: 1
+  m_MaxValue: 8
+  m_WholeNumbers: 1
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -1836,7 +1846,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 713670830}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 294096431}
+        m_TargetAssemblyTypeName: MyGrid, Assembly-CSharp
+        m_MethodName: Pause
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &713670830
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2245,10 +2267,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 833674149}
   m_HandleRect: {fileID: 1176597418}
   m_Direction: 0
-  m_MinValue: 0
+  m_MinValue: 1
   m_MaxValue: 200
   m_WholeNumbers: 1
-  m_Value: 0
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -2597,7 +2619,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Speed: 10 FPS'
+  m_text: 'Speed: 0 FPS'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -4080,10 +4102,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 1067779324}
   m_HandleRect: {fileID: 1372662609}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
-  m_WholeNumbers: 0
-  m_Value: 0
+  m_MinValue: 1
+  m_MaxValue: 8
+  m_WholeNumbers: 1
+  m_Value: 1
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -4275,6 +4297,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: af33e45dd01fc3549962cb1d47caf4a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  grid: {fileID: 0}
+  gridSizeText: {fileID: 1200017550}
+  generateGridButton: {fileID: 0}
+  gridSizeSlider: {fileID: 822553685}
+  playButton: {fileID: 0}
+  pauseButton: {fileID: 0}
+  nextFrameButton: {fileID: 0}
+  speedSlider: {fileID: 0}
+  speedText: {fileID: 0}
+  statesText: {fileID: 0}
+  statesSlider: {fileID: 0}
+  thresholdText: {fileID: 0}
+  thresholdSlider: {fileID: 0}
+  rangeText: {fileID: 0}
+  rangeSlider: {fileID: 0}
+  neighborhoodDropdown: {fileID: 0}
+  warping: 0
+  colorSelectorButton: {fileID: 0}
 --- !u!4 &1165391933
 Transform:
   m_ObjectHideFlags: 0
@@ -4673,10 +4713,10 @@ MonoBehaviour:
   m_FillRect: {fileID: 822927838}
   m_HandleRect: {fileID: 1146485118}
   m_Direction: 0
-  m_MinValue: 0
-  m_MaxValue: 1
+  m_MinValue: 0.001
+  m_MaxValue: 0.2
   m_WholeNumbers: 0
-  m_Value: 0
+  m_Value: 0.2
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5399,7 +5439,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1532448672}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 294096431}
+        m_TargetAssemblyTypeName: MyGrid, Assembly-CSharp
+        m_MethodName: GenerateCells
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1532448672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5564,7 +5616,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1555582062}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 294096431}
+        m_TargetAssemblyTypeName: MyGrid, Assembly-CSharp
+        m_MethodName: Iterate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1555582062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6695,7 +6759,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2132362947}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 294096431}
+        m_TargetAssemblyTypeName: MyGrid, Assembly-CSharp
+        m_MethodName: Play
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2132362947
 MonoBehaviour:
   m_ObjectHideFlags: 0

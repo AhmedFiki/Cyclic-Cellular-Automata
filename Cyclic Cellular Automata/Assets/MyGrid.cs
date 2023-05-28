@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class MyGrid : MonoBehaviour
 {
@@ -25,11 +27,35 @@ public class MyGrid : MonoBehaviour
     public Vector2Int testCellPos = Vector2Int.zero;
     //neighborhood mode;
 
+    [Header("Sliders")]
+
+    public Slider gridSizeSlider;
+    public TMP_Text gridSizeText;
+
+    public Slider speedSlider;
+    public TMP_Text speedText;
+
+    public Slider statesSlider;
+    public TMP_Text statesText;
+
+    public Slider thresholdSlider;
+    public TMP_Text thresholdText;
+
+    public Slider rangeSlider;
+    public TMP_Text rangeText;
+
     private void Start()
     {
         camera = Camera.main;
         cells = new Cell[size.x, size.y];
         neighborhoodCount = CalculateNeighborCount(range);
+
+        gridSizeSlider.onValueChanged.AddListener(SetGridSizeFromSlider);
+        speedSlider.onValueChanged.AddListener(SetSpeedFromSlider);
+        statesSlider.onValueChanged.AddListener(SetStatesFromSlider);
+        thresholdSlider.onValueChanged.AddListener(SetThresholdFromSlider);
+        rangeSlider.onValueChanged.AddListener(SetRangeFromSlider);
+
     }
 
     private void Update()
@@ -66,12 +92,22 @@ public class MyGrid : MonoBehaviour
     }
     IEnumerator IteratorTimer()
     {
-      
-            Iterate();
-            yield return new WaitForSeconds(playSpeed);
-        
-        if(play)
+
+        Iterate();
+        yield return new WaitForSeconds(playSpeed);
+
+        if (play)
+            StartCoroutine(IteratorTimer());
+
+    }
+    public void Play()
+    {
+        play = true;
         StartCoroutine(IteratorTimer());
+    }
+    public void Pause()
+    {
+        play = false;
 
     }
     public void Iterate()
@@ -79,14 +115,14 @@ public class MyGrid : MonoBehaviour
 
         foreach (Cell cell in cells)
         {
-           // Debug.Log(cell.GetPosition()+"  "+CheckNeighborCells(GetNeighborCells(cell), cell.state));
+            // Debug.Log(cell.GetPosition()+"  "+CheckNeighborCells(GetNeighborCells(cell), cell.state));
 
-            if(CheckNeighborCells(GetNeighborCells(cell), cell.state) >= threshold)
+            if (CheckNeighborCells(GetNeighborCells(cell), cell.state) >= threshold)
             {
-                
-                    //Debug.Log(cell.GetPosition() + "Iterated" +cell.nextState);
 
-                if(cell.state == maxState)
+                //Debug.Log(cell.GetPosition() + "Iterated" +cell.nextState);
+
+                if (cell.state == maxState)
                 {
                     cell.nextState = minState;
                 }
@@ -96,7 +132,7 @@ public class MyGrid : MonoBehaviour
 
                 }
 
-               // Debug.Log(cell.GetPosition() + "Iterated" + cell.nextState);
+                // Debug.Log(cell.GetPosition() + "Iterated" + cell.nextState);
 
             }
             else
@@ -166,7 +202,8 @@ public class MyGrid : MonoBehaviour
             if (cell.state == current + 1)
             {
                 count++;
-            }else if(cell.state == minState && current == maxState)
+            }
+            else if (cell.state == minState && current == maxState)
             {
                 count++;
             }
@@ -201,13 +238,40 @@ public class MyGrid : MonoBehaviour
                 //Debug.Log("grid palette len: " + colorPalette.Length);
                 cellScript.SetColorPalette(colorPalette);
                 cellScript.SetState(randomNumber);
-                
+
                 cells[i, j] = cellScript;
 
             }
         }
     }
+    public void SetGridSizeFromSlider(float gridSize)
+    {
+        size = new Vector2Int((int)gridSize, (int)gridSize);
+        gridSizeText.text = (int)gridSize + "x" + (int)gridSize;
+    }
+    public void SetSpeedFromSlider(float speed)
+    {
+        playSpeed = speed;
+        speedText.text = "Speed: " + (int)(1 / speed) + " FPS";
 
+    }
+    public void SetStatesFromSlider(float s)
+    {
+        maxState = (int)s - 1;
+        statesText.text = "States: " + s;
+
+    }
+    public void SetThresholdFromSlider(float t)
+    {
+        threshold = (int)t;
+        thresholdText.text = "Threshold: " + t;
+    }
+    public void SetRangeFromSlider(float r)
+    {
+        range = (int)r;
+        rangeText.text = "Range: " + r;
+
+    }
     public void KillChildren()
     {
         int childCount = transform.childCount;
@@ -227,9 +291,10 @@ public class MyGrid : MonoBehaviour
     {
         float xOffset = size.x * 0.4f;
 
-        camera.orthographicSize = size.x/2 +5;
-        camera.transform.position = new Vector2(size.x/2 +xOffset ,size.y/2);
+        camera.orthographicSize = size.x / 2 + 5;
+        camera.transform.position = new Vector2(size.x / 2 + xOffset, size.y / 2);
 
     }
+
 
 }
