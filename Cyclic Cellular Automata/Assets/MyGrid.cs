@@ -9,17 +9,23 @@ public class MyGrid : MonoBehaviour
     public float cellSize = 1;
     public GameObject cellPrefab;
 
+    public Camera camera;
+
     public int maxState = 2;
     public int minState = 0;
     public int range = 1;
     public int threshold = 2;
     public int neighborhoodCount;
 
+    public bool play = false;
+    public float playSpeed = 0.5f;
+
     public Vector2Int testCellPos = Vector2Int.zero;
     //neighborhood mode;
 
     private void Start()
     {
+        camera = Camera.main;
         cells = new Cell[size.x, size.y];
         neighborhoodCount = CalculateNeighborCount(range);
     }
@@ -31,10 +37,20 @@ public class MyGrid : MonoBehaviour
         {
             GenerateCells();
         }
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKey(KeyCode.E))
         {
             Iterate();
-        }if (Input.GetKeyDown(KeyCode.X))
+        }
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            play = true;
+            StartCoroutine(IteratorTimer());
+        }
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            play = false;
+        }
+        if (Input.GetKeyDown(KeyCode.X))
         {
             UpdateCells();
         }
@@ -45,6 +61,16 @@ public class MyGrid : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.C))
         {
         }
+    }
+    IEnumerator IteratorTimer()
+    {
+      
+            Iterate();
+            yield return new WaitForSeconds(playSpeed);
+        
+        if(play)
+        StartCoroutine(IteratorTimer());
+
     }
     public void Iterate()
     {
@@ -151,7 +177,11 @@ public class MyGrid : MonoBehaviour
 
     public void GenerateCells()
     {
+        UpdateCameraPosition();
         KillChildren();
+        cells = new Cell[size.x, size.y];
+        neighborhoodCount = CalculateNeighborCount(range);
+
         for (int i = 0; i < size.x; i++)
         {
             for (int j = 0; j < size.y; j++)
@@ -183,5 +213,15 @@ public class MyGrid : MonoBehaviour
         }
     }
 
+
+
+    void UpdateCameraPosition()
+    {
+        float xOffset = size.x * 0.4f;
+
+        camera.orthographicSize = size.x/2 +5;
+        camera.transform.position = new Vector2(size.x/2 +xOffset ,size.y/2);
+
+    }
 
 }

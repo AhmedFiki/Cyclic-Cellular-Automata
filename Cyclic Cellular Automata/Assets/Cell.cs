@@ -33,12 +33,12 @@ public class Cell : MonoBehaviour
         switch (c)
         {
             case 0:
-                color = Color.white; 
+                color = Color.black; 
                 break;
                 case 1:
                 color = Color.red; break;
                 case 2:
-                color = Color.gray;
+                color = Color.yellow;
                 break;
                 case 3:
                 color = Color.black;
