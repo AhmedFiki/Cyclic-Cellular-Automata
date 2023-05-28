@@ -20,6 +20,8 @@ public class MyGrid : MonoBehaviour
     public bool play = false;
     public float playSpeed = 0.5f;
 
+    public Color[] colorPalette;
+
     public Vector2Int testCellPos = Vector2Int.zero;
     //neighborhood mode;
 
@@ -196,7 +198,10 @@ public class MyGrid : MonoBehaviour
 
                 cellScript.SetPosition(i, j);
                 cellScript.SetCellScale(cellSize);
+                //Debug.Log("grid palette len: " + colorPalette.Length);
+                cellScript.SetColorPalette(colorPalette);
                 cellScript.SetState(randomNumber);
+                
                 cells[i, j] = cellScript;
 
             }
@@ -213,7 +218,10 @@ public class MyGrid : MonoBehaviour
         }
     }
 
-
+    public void LoadColorPalette(Color[] palette)
+    {
+        colorPalette = palette;
+    }
 
     void UpdateCameraPosition()
     {

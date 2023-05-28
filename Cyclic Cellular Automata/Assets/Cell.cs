@@ -10,12 +10,12 @@ public class Cell : MonoBehaviour
     public int y;
     public int state;
     public int nextState;
-    public Color color;
-    public TextMesh text;
+    public Color[] colorPalette;
+    //public TextMesh text;
 
     private void Awake()
     {
-        text = GetComponentInChildren<TextMesh>();
+        //text = GetComponentInChildren<TextMesh>();
         nextState = state;
     }
     public void SetPosition(int x, int y)
@@ -28,7 +28,7 @@ public class Cell : MonoBehaviour
         return new Vector2Int(x, y);
     }
 
-    public void SetSpriteColor(int c)
+    /*public void SetSpriteColor(int c)
     {
         switch (c)
         {
@@ -48,7 +48,18 @@ public class Cell : MonoBehaviour
         }
 
         GetComponent<SpriteRenderer>().color = color;
+    }*/
+    public void SetSpriteColor(int c)
+    {
+        //Debug.Log(c + " " + colorPalette.Length);
+        GetComponent<SpriteRenderer>().color = colorPalette[c];
+
     }
+    public void SetColorPalette(Color[] palette)
+    {
+        colorPalette =new Color[palette.Length];
+        colorPalette = palette;
+            }
     public void SetCellScale(float k)
     {
        gameObject.transform.localScale = new Vector3(k,k,k);
@@ -61,7 +72,7 @@ public class Cell : MonoBehaviour
     public void SetState(int s)
     {
         state = s;
-        text.text = state + "";
+        //text.text = state + "";
         nextState = state;
         SetSpriteColor(s);
     }
