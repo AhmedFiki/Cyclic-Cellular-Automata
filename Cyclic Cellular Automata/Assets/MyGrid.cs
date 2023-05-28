@@ -19,6 +19,8 @@ public class MyGrid : MonoBehaviour
     public int threshold = 2;
     public int neighborhoodCount;
 
+    public bool mooreNeighborhood = true;
+
     public bool play = false;
     public float playSpeed = 0.5f;
 
@@ -44,6 +46,8 @@ public class MyGrid : MonoBehaviour
     public Slider rangeSlider;
     public TMP_Text rangeText;
 
+    public TMP_Dropdown neighborhoodDropdown;
+
     private void Start()
     {
         camera = Camera.main;
@@ -55,7 +59,7 @@ public class MyGrid : MonoBehaviour
         statesSlider.onValueChanged.AddListener(SetStatesFromSlider);
         thresholdSlider.onValueChanged.AddListener(SetThresholdFromSlider);
         rangeSlider.onValueChanged.AddListener(SetRangeFromSlider);
-
+        neighborhoodDropdown.onValueChanged.AddListener(SetNeighborhoodFromDropdown);
     }
 
     private void Update()
@@ -84,7 +88,7 @@ public class MyGrid : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.N))
         {
-            GetNeighborCells(cells[testCellPos.x, testCellPos.y]);
+            //GetNeighborCells(cells[testCellPos.x, testCellPos.y]);
         }
         if (Input.GetKeyDown(KeyCode.C))
         {
@@ -116,29 +120,57 @@ public class MyGrid : MonoBehaviour
         foreach (Cell cell in cells)
         {
             // Debug.Log(cell.GetPosition()+"  "+CheckNeighborCells(GetNeighborCells(cell), cell.state));
-
-            if (CheckNeighborCells(GetNeighborCells(cell), cell.state) >= threshold)
+            if (mooreNeighborhood)
             {
-
-                //Debug.Log(cell.GetPosition() + "Iterated" +cell.nextState);
-
-                if (cell.state == maxState)
+                if (CheckNeighborCells(GetNeighborCellsMoore(cell), cell.state) >= threshold)
                 {
-                    cell.nextState = minState;
+
+                    //Debug.Log(cell.GetPosition() + "Iterated" +cell.nextState);
+
+                    if (cell.state == maxState)
+                    {
+                        cell.nextState = minState;
+                    }
+                    else
+                    {
+                        cell.IterateNextState();
+
+                    }
+
+                    // Debug.Log(cell.GetPosition() + "Iterated" + cell.nextState);
+
                 }
                 else
                 {
-                    cell.IterateNextState();
+                    cell.nextState = cell.state;
+                }
+            }
+            else //von neighborhood
+            {
+                if (CheckNeighborCells(GetNeighborCellsVon(cell), cell.state) >= threshold)
+                {
+
+                    //Debug.Log(cell.GetPosition() + "Iterated" +cell.nextState);
+
+                    if (cell.state == maxState)
+                    {
+                        cell.nextState = minState;
+                    }
+                    else
+                    {
+                        cell.IterateNextState();
+
+                    }
+
+                    // Debug.Log(cell.GetPosition() + "Iterated" + cell.nextState);
 
                 }
-
-                // Debug.Log(cell.GetPosition() + "Iterated" + cell.nextState);
-
+                else
+                {
+                    cell.nextState = cell.state;
+                }
             }
-            else
-            {
-                cell.nextState = cell.state;
-            }
+            
 
         }
         UpdateCells();
@@ -169,7 +201,7 @@ public class MyGrid : MonoBehaviour
         }
         return count;
     }
-    public Cell[] GetNeighborCells(Cell cell)
+    public Cell[] GetNeighborCellsMoore(Cell cell)
     {
         List<Cell> cellsList = new List<Cell>();
         //Moore neighborhood: Regular
@@ -190,6 +222,31 @@ public class MyGrid : MonoBehaviour
                 cellsList.Add(cells[cell.x + i, cell.y + j]);
             }
         }
+        return cellsList.ToArray();
+    }
+    public Cell[] GetNeighborCellsVon(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Von Neumann neighborhood: Cross-shaped
+        // Add the four cardinal directions (north, south, east, west)
+
+        // Check north neighbor
+        if (cell.y < size.y - 1)
+            cellsList.Add(cells[cell.x, cell.y + 1]);
+
+        // Check south neighbor
+        if (cell.y > 0)
+            cellsList.Add(cells[cell.x, cell.y - 1]);
+
+        // Check east neighbor
+        if (cell.x < size.x - 1)
+            cellsList.Add(cells[cell.x + 1, cell.y]);
+
+        // Check west neighbor
+        if (cell.x > 0)
+            cellsList.Add(cells[cell.x - 1, cell.y]);
+
         return cellsList.ToArray();
     }
 
@@ -271,6 +328,19 @@ public class MyGrid : MonoBehaviour
         range = (int)r;
         rangeText.text = "Range: " + r;
 
+    }
+    public void SetNeighborhoodFromDropdown(int r)
+    {
+
+        if (r == 0)
+        {
+            mooreNeighborhood= true;
+        }
+        else
+        {
+            mooreNeighborhood= false;
+        }
+        
     }
     public void KillChildren()
     {
