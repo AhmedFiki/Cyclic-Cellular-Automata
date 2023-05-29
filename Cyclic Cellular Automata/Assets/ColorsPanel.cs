@@ -13,7 +13,11 @@ public class ColorsPanel : MonoBehaviour
     private Vector3 shownPosition;
 
     public ColorCell[] colorCells;
+    public ColorPalette currentPalette;
+    public ColorPalette defaultPalette;
 
+
+    List<ColorPalette> colorPalettes = new List<ColorPalette>();
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -26,7 +30,30 @@ public class ColorsPanel : MonoBehaviour
     }
     private void Start()
     {
+        LoadColorPalette(defaultPalette);
+    }
+    public void LoadColorPalette(ColorPalette palette)
+    {
+        palette.GenerateHexCodes();
+        for(int i=0; i<colorCells.Length; i++)
+        {
+            colorCells[i].SetCell(palette[i], palette.GetHexCode(i));
 
+        }
+    }
+    public ColorPalette SaveColorPalette(string name)
+    {
+        Color[] colors = new Color[colorCells.Length];
+
+        for(int i = 0; i < colorCells.Length; i++)
+        {
+            colors[i] = colorCells[i].color;
+
+        }
+
+        ColorPalette newPalette= new ColorPalette(name,colors);
+
+        return newPalette;
     }
 
     public void ShowPanel()
@@ -57,6 +84,20 @@ public class ColorsPanel : MonoBehaviour
         Color32 color32 = color;
         string hex = "#"+color32.r.ToString("X2") + color32.g.ToString("X2") + color32.b.ToString("X2");
         return hex;
+    }
+    public Color[] GetColorArray()
+    {
+        Color[] array= new Color[colorCells.Length];
+
+        for(int i = 0; i < colorCells.Length; i++)
+        {
+
+            array[i] = colorCells[i].color;
+
+        }
+
+        return array;
+
     }
 
 }

@@ -32,6 +32,10 @@ public class ColorCell : MonoBehaviour
         hexCode = hex;
         colorImage.color = color;
     }
+    public void InputColor(Color c)
+    {
+
+    }
     public void InputHex()
     {
         string hex = hexInputField.text;

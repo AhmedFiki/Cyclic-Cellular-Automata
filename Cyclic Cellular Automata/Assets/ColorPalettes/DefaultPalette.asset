@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
+  m_Name: DefaultPalette
+  m_EditorClassIdentifier: 
+  name: Orange
+  colors:
+  - {r: 0.9817642, g: 1, b: 0, a: 1}
+  - {r: 1, g: 0.6144983, b: 0, a: 1}
+  - {r: 0, g: 0, b: 0, a: 1}
+  - {r: 0.6886792, g: 0.10828286, b: 0.13839348, a: 1}
+  - {r: 0.6792453, g: 0.15806332, b: 0.46208596, a: 1}
+  - {r: 0.32872608, g: 0, b: 0.6698113, a: 1}
+  - {r: 0, g: 0.6226415, b: 0.6090798, a: 1}
+  - {r: 0.2138661, g: 0.764151, b: 0.4223074, a: 1}
+  hexCodes:
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
