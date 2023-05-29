@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System;
 using TMPro;
 using UnityEngine;
@@ -15,6 +16,13 @@ public class ColorCell : MonoBehaviour
     public Image colorImage;
     public TMP_InputField hexInputField;
 
+    public RectTransform colorGrid;
+     ColorGridPanel panel;
+
+    private void Awake()
+    {
+        panel = colorGrid.GetComponent<ColorGridPanel>();
+    }
     public void UpdateCell()
     {
         colorImage.color = color;
@@ -34,6 +42,29 @@ public class ColorCell : MonoBehaviour
     }
     public void InputColor(Color c)
     {
+        color = c;
+        string hex = ColorUtility.ToHtmlStringRGB(c);
+        hexInputField.text = hex;
+        hexCode = hex;
+        colorImage.color = color;
+    }
+    public void ShowColorGrid()
+    {
+        if (panel.shown)
+        {
+            return;
+        }
+        colorGrid.DOLocalMove(new Vector3(-colorGrid.offsetMax.x,0, 0f), 0.2f).SetEase(Ease.OutExpo);
+        panel.shown = true;
+
+    }public void HideColorGrid()
+    {
+        if (!panel.shown)
+        {
+            return;
+        }
+        colorGrid.DOLocalMove(new Vector3(-colorGrid.offsetMax.x, 0, 0f), 0.2f).SetEase(Ease.OutExpo);
+        panel.shown = false;
 
     }
     public void InputHex()
