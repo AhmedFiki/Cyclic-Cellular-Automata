@@ -25,6 +25,8 @@ public class ColorsPanel : MonoBehaviour
 
     private void Awake()
     {
+        ColorPaletteSaveLoad.Initialize();
+
         rectTransform = GetComponent<RectTransform>();
 
         hiddenPosition = new Vector3(rectTransform.offsetMax.x, y, 0f);
@@ -41,6 +43,17 @@ public class ColorsPanel : MonoBehaviour
         LoadColorPalette(defaultPalette);
         paletteDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
 
+ 
+
+
+    }
+    private void Update()
+    {
+       /* if (Input.GetKeyDown(KeyCode.Q))
+        {
+            ColorPaletteSaveLoad.Instance.SaveColorPalette(defaultPalette, "dp");
+            ColorPaletteSaveLoad.Instance.LoadColorPalette("dp");
+        }*/
     }
     public void LoadColorPalette(ColorPalette palette)
     {

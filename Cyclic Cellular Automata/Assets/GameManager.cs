@@ -33,17 +33,6 @@ public class GameManager : MonoBehaviour
     public Button colorSelectorButton;
 
 
-    private void Start()
-    {
 
-
-    }
-    private void Update()
-    {
-        
-
-
-
-    }
 
 }
