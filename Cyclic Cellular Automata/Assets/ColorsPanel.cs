@@ -1,7 +1,10 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ColorsPanel : MonoBehaviour
 {
@@ -18,6 +21,8 @@ public class ColorsPanel : MonoBehaviour
 
 
     List<ColorPalette> colorPalettes = new List<ColorPalette>();
+    public TMP_Dropdown paletteDropdown;
+
     private void Awake()
     {
         rectTransform = GetComponent<RectTransform>();
@@ -30,7 +35,12 @@ public class ColorsPanel : MonoBehaviour
     }
     private void Start()
     {
+        PopulateColorPalettesList();
+        PopulatePaletteDropdown();
+        //Debug.Log(colorPalettes[0]);
         LoadColorPalette(defaultPalette);
+        paletteDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
+
     }
     public void LoadColorPalette(ColorPalette palette)
     {
@@ -40,6 +50,34 @@ public class ColorsPanel : MonoBehaviour
             colorCells[i].SetCell(palette[i], palette.GetHexCode(i));
 
         }
+    }
+    public void LoadColorPalette(string paletteName)
+    {
+        ColorPalette paletteObject= colorPalettes.Find(x => x.name == paletteName);
+
+        LoadColorPalette(paletteObject);
+    }
+    public void PopulatePaletteDropdown()
+    {
+        paletteDropdown.options.Clear();
+        foreach (var palette in colorPalettes)
+        {
+            paletteDropdown.options.Add(new TMP_Dropdown.OptionData() { text = palette.name });
+        }
+        if(paletteDropdown.options.Count > 0)
+        {
+            paletteDropdown.value = 0;
+
+        }
+
+
+
+    }
+    public void OnDropdownValueChanged(int index)
+    {
+        string selectedOption = paletteDropdown.options[index].text;
+        Debug.Log("Selected option: " + selectedOption);
+        LoadColorPalette(selectedOption);
     }
     public ColorPalette SaveColorPalette(string name)
     {
@@ -97,6 +135,19 @@ public class ColorsPanel : MonoBehaviour
         }
 
         return array;
+
+    }
+    public void PopulateColorPalettesList()
+    {
+
+        string[] assetNames = AssetDatabase.FindAssets("", new[] { "Assets/ColorPalettes" });
+
+        foreach (string SOName in assetNames)
+        {
+            var SOpath = AssetDatabase.GUIDToAssetPath(SOName);
+            var ColorPaletteObject = AssetDatabase.LoadAssetAtPath<ColorPalette>(SOpath);
+            colorPalettes.Add(ColorPaletteObject);
+        }
 
     }
 

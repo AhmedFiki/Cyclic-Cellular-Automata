@@ -48299,13 +48299,7 @@ MonoBehaviour:
   m_ItemImage: {fileID: 0}
   m_Value: 0
   m_Options:
-    m_Options:
-    - m_Text: Rainbow
-      m_Image: {fileID: 0}
-    - m_Text: Orange
-      m_Image: {fileID: 0}
-    - m_Text: Mono
-      m_Image: {fileID: 0}
+    m_Options: []
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -51434,6 +51428,7 @@ MonoBehaviour:
   - {fileID: 1915354539}
   currentPalette: {fileID: 0}
   defaultPalette: {fileID: 11400000, guid: 1e2bcbc18ddd6454d9dda0d417caf170, type: 2}
+  paletteDropdown: {fileID: 1605663780}
 --- !u!1 &1715572267
 GameObject:
   m_ObjectHideFlags: 0
@@ -60615,7 +60610,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Rainbow
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46b2301d2cce2344cb187087329d7180, type: 2}
   m_sharedMaterial: {fileID: -8338595920820702854, guid: 46b2301d2cce2344cb187087329d7180, type: 2}

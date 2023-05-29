@@ -19,6 +19,7 @@ public class ColorPalette : ScriptableObject
     private void Awake()
     {
         GenerateHexCodes();
+
     }
     // Constructor
     public ColorPalette(string name, Color[] colors)
@@ -31,9 +32,11 @@ public class ColorPalette : ScriptableObject
     // Generate the hex codes for the colors
     public void GenerateHexCodes()
     {
+
         hexCodes = new string[colors.Length];
         for (int i = 0; i < colors.Length; i++)
         {
+            colors[i].a = 1;
             hexCodes[i] = "#"+ColorUtility.ToHtmlStringRGB(colors[i]);
         }
     }
