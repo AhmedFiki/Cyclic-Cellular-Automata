@@ -51,7 +51,7 @@ public class ColorPaletteSaveLoad
         Debug.Log("ColorPalette saved with name: " + paletteName);
     }
 
-    public ColorPalette LoadColorPalette(string paletteName)
+    /*public ColorPalette LoadColorPalette(string paletteName)
     {
         string filePath = GetFilePath(paletteName);
 
@@ -78,6 +78,36 @@ public class ColorPaletteSaveLoad
             Debug.Log("ColorPalette with name " + paletteName + " not found!");
             return null;
         }
+    }*/
+    public ColorPalette[] LoadAllColorPalettes()
+    {
+        DirectoryInfo directory = new DirectoryInfo(savePath);
+        FileInfo[] files = directory.GetFiles("*.dat"); // Assuming the saved files have the extension ".dat"
+
+        List<ColorPalette> colorPalettes = new List<ColorPalette>();
+
+        foreach (FileInfo file in files)
+        {
+            BinaryFormatter formatter = new BinaryFormatter();
+            FileStream fileStream = File.Open(file.FullName, FileMode.Open);
+
+            // Read the serialized data from the file
+            byte[] paletteData = new byte[fileStream.Length];
+            fileStream.Read(paletteData, 0, (int)fileStream.Length);
+            fileStream.Close();
+
+            // Convert the binary data back to ColorPaletteSerializable object
+            ColorPaletteSerializable colorPaletteSerializable = DeserializeColorPalette(paletteData);
+
+            // Convert ColorPaletteSerializable to ColorPalette
+            ColorPalette colorPalette = new ColorPalette();
+            colorPalette.SerializableToSO(colorPaletteSerializable);
+
+            colorPalettes.Add(colorPalette);
+        }
+
+        Debug.Log("Loaded " + colorPalettes.Count + " ColorPalettes from path: " + savePath);
+        return colorPalettes.ToArray();
     }
 
     private byte[] SerializeColorPalette(ColorPaletteSerializable palette)
