@@ -34,7 +34,7 @@ public class TooltipHandler : MonoBehaviour
 
     public void OnPointerEnter()
     {
-        Debug.Log("Entered");
+        //Debug.Log("Entered");
         if(tooltipsActive ) { 
         tooltipCoroutine = StartCoroutine(ShowTooltipAfterDelay());
         }
@@ -42,7 +42,7 @@ public class TooltipHandler : MonoBehaviour
 
     public void OnPointerExit()
     {
-        Debug.Log("Exited");
+        //Debug.Log("Exited");
         if (tooltipsActive)
         {
 

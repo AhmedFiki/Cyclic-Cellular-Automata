@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class MyGrid : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class MyGrid : MonoBehaviour
     public Cell[,] cells;
     public float cellSize = 1;
     public GameObject cellPrefab;
+
+    public bool gridVisible=false;
 
     public Camera camera;
 
@@ -19,15 +22,15 @@ public class MyGrid : MonoBehaviour
     public int threshold = 2;
     public int neighborhoodCount;
 
-    public bool mooreNeighborhood = true;
-
+    public int neighborhood = 0;
+    public bool warp = false;
+    public Toggle warpToggle;
     public bool play = false;
     public float playSpeed = 0.5f;
 
     public Color[] colorArray;
 
     public Vector2Int testCellPos = Vector2Int.zero;
-    //neighborhood mode;
 
     public ColorsPanel colorsPanel;
 
@@ -64,38 +67,6 @@ public class MyGrid : MonoBehaviour
         neighborhoodDropdown.onValueChanged.AddListener(SetNeighborhoodFromDropdown);
     }
 
-    private void Update()
-    {
-
-        if (Input.GetKeyDown(KeyCode.G))
-        {
-            GenerateCells();
-        }
-        if (Input.GetKey(KeyCode.E))
-        {
-            Iterate();
-        }
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            play = true;
-            StartCoroutine(IteratorTimer());
-        }
-        if (Input.GetKeyDown(KeyCode.S))
-        {
-            play = false;
-        }
-        if (Input.GetKeyDown(KeyCode.X))
-        {
-            UpdateCells();
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            //GetNeighborCells(cells[testCellPos.x, testCellPos.y]);
-        }
-        if (Input.GetKeyDown(KeyCode.C))
-        {
-        }
-    }
     IEnumerator IteratorTimer()
     {
 
@@ -121,88 +92,364 @@ public class MyGrid : MonoBehaviour
 
         foreach (Cell cell in cells)
         {
-            // Debug.Log(cell.GetPosition()+"  "+CheckNeighborCells(GetNeighborCells(cell), cell.state));
-            if (mooreNeighborhood)
+            if(HandleThreshold(neighborhood, cell))
             {
-                if (CheckNeighborCells(GetNeighborCellsMoore(cell), cell.state) >= threshold)
+                if (cell.state == maxState)
                 {
-
-                    //Debug.Log(cell.GetPosition() + "Iterated" +cell.nextState);
-
-                    if (cell.state == maxState)
-                    {
-                        cell.nextState = minState;
-                    }
-                    else
-                    {
-                        cell.IterateNextState();
-
-                    }
-
-                    // Debug.Log(cell.GetPosition() + "Iterated" + cell.nextState);
-
+                    cell.nextState = minState;
                 }
                 else
                 {
-                    cell.nextState = cell.state;
+                    cell.IterateNextState();
                 }
             }
-            else //von neighborhood
+            else
             {
-                if (CheckNeighborCells(GetNeighborCellsVon(cell), cell.state) >= threshold)
-                {
-
-                    //Debug.Log(cell.GetPosition() + "Iterated" +cell.nextState);
-
-                    if (cell.state == maxState)
-                    {
-                        cell.nextState = minState;
-                    }
-                    else
-                    {
-                        cell.IterateNextState();
-
-                    }
-
-                    // Debug.Log(cell.GetPosition() + "Iterated" + cell.nextState);
-
-                }
-                else
-                {
-                    cell.nextState = cell.state;
-                }
+                cell.nextState = cell.state;
             }
-            
-
         }
         UpdateCells();
 
     }
+    bool HandleThreshold(int neighborhood, Cell cell)
+    {
+        switch (neighborhood)
+        {
+            case 0:
+                return CheckNeighborCells(GetNeighborCellsMoore(cell), cell.state) >= threshold;
+                break;
+            case 1:
+                return CheckNeighborCells(GetNeighborCellsCross(cell), cell.state) >= threshold;
+                break;
+            case 2:
+                return CheckNeighborCells(GetNeighborCellsCustom(cell), cell.state) >= threshold;
+                break;
+            case 3:
+                return CheckNeighborCells(GetNeighborCellsRemoteMoore(cell), cell.state) >= threshold;
+                break;
+            case 4:
+                return CheckNeighborCells(GetNeighborCellsVonNeumann(cell), cell.state) >= threshold;
+                break;
+            case 5:
+                return CheckNeighborCells(GetRemoteNeighborCellsVonNeumann(cell), cell.state) >= threshold;
+                break;
+            case 6:
+                return CheckNeighborCells(GetNeighborCellsS(cell), cell.state) >= threshold;
+                break;
+            case 7:
+                return CheckNeighborCells(GetNeighborCellsBlade(cell), cell.state) >= threshold;
+                break;
+            case 8:
+                return CheckNeighborCells(GetNeighborCellsCorners(cell), cell.state) >= threshold;
+                break;
+            case 9:
+                return CheckNeighborCells(GetNeighborCellsTickMark(cell), cell.state) >= threshold;
+                break;
+            default: 
+                return false;
+        }
+    }
+
     void UpdateCells()
     {
-
         foreach (Cell cell in cells)
         {
             cell.UpdateCell();
         }
-
-
     }
+
     public int GetCellState(int x, int y)
     {
         return cells[x, y].state;
     }
+
     public int CalculateNeighborCount(int range)
     {
-        //Moore neighborhood: Regular
         int count = 0;
-
         for (int i = 1; i <= range; i++)
         {
             count += i * 8;
         }
         return count;
     }
+
+    public Cell[] GetNeighborCellsTickMark(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Blade Neighborhood
+        for (int i = 1; i <= range; i++)
+        {
+            AddNeighborCell(cellsList, cell.x + i, cell.y + i);
+            AddNeighborCell(cellsList, cell.x - i, cell.y - i);
+            AddNeighborCell(cellsList, cell.x + i, cell.y - i);
+            AddNeighborCell(cellsList, cell.x - i, cell.y + i);
+        }
+
+        // Remote Moore Neighborhood
+        for (int i = -range; i <= range; i++)
+        {
+            for (int j = -range; j <= range; j++)
+            {
+                if (Mathf.Abs(i) == range || Mathf.Abs(j) == range)
+                {
+                    AddNeighborCell(cellsList, cell.x + i, cell.y + j);
+                }
+            }
+        }
+
+        return cellsList.ToArray();
+    }
+
+    public Cell[] GetNeighborCellsCorners(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Check the +x, +y direction
+        for (int i = 1; i <= range; i++)
+        {
+            for (int j = i; j >= 1; j--)
+            {
+                AddNeighborCell(cellsList, cell.x + j, cell.y + i);
+            }
+        }
+
+        // Check the -x, -y direction
+        for (int i = 1; i <= range; i++)
+        {
+            for (int j = i; j >= 1; j--)
+            {
+                AddNeighborCell(cellsList, cell.x - j, cell.y - i);
+            }
+        }
+
+        // Check the +x, -y direction
+        for (int i = 1; i <= range; i++)
+        {
+            for (int j = i; j >= 1; j--)
+            {
+                AddNeighborCell(cellsList, cell.x + j, cell.y - i);
+            }
+        }
+
+        // Check the -x, +y direction
+        for (int i = 1; i <= range; i++)
+        {
+            for (int j = i; j >= 1; j--)
+            {
+                AddNeighborCell(cellsList, cell.x - j, cell.y + i);
+            }
+        }
+
+        return cellsList.ToArray();
+    }
+
+    public Cell[] GetNeighborCellsBlade(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Check the diagonal directions
+        for (int i = 1; i <= range; i++)
+        {
+            // Upper-right diagonal
+            AddNeighborCell(cellsList, cell.x + i, cell.y + i);
+
+            // Upper-left diagonal
+            AddNeighborCell(cellsList, cell.x - i, cell.y + i);
+
+            // Lower-right diagonal
+            AddNeighborCell(cellsList, cell.x + i, cell.y - i);
+
+            // Lower-left diagonal
+            AddNeighborCell(cellsList, cell.x - i, cell.y - i);
+        }
+
+        return cellsList.ToArray();
+    }
+
+    public Cell[] GetNeighborCellsS(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Iterate over the cells in the positive quadrant
+        for (int i = 1; i <= range; i++)
+        {
+            // +x, +y direction
+            AddNeighborCell(cellsList, cell.x + i, cell.y + i);
+
+            // -x, +y direction
+            AddNeighborCell(cellsList, cell.x - i, cell.y + i);
+        }
+
+        // Iterate over the cells in the negative quadrant
+        for (int i = -1; i >= -range; i--)
+        {
+            // +x, -y direction
+            AddNeighborCell(cellsList, cell.x + i, cell.y + i);
+
+            // -x, -y direction
+            AddNeighborCell(cellsList, cell.x - i, cell.y + i);
+        }
+
+        return cellsList.ToArray();
+    }
+
+    public Cell[] GetNeighborCellsCustom(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Custom neighborhood: Random positions within the range (-7,7) to (7,-7)
+        int minOffset = -range;
+        int maxOffset = range;
+
+        for (int i = 0; i < range; i++)
+        {
+            int offsetX = Random.Range(minOffset, maxOffset + 1);
+            int offsetY = Random.Range(minOffset, maxOffset + 1);
+
+            // Apply wrapping if enabled
+            if (warp)
+            {
+                offsetX = (cell.x + offsetX + size.x) % size.x;
+                offsetY = (cell.y + offsetY + size.y) % size.y;
+            }
+
+            // Check if neighbor cell is valid and add it to the list
+            if (IsValidCellIndex(offsetX, offsetY))
+                cellsList.Add(cells[offsetX, offsetY]);
+        }
+
+        return cellsList.ToArray();
+    }
+
+    private bool IsValidCellIndex(int x, int y)
+    {
+        return x >= 0 && x < size.x && y >= 0 && y < size.y;
+    }
+
+    public Cell[] GetRemoteNeighborCellsVonNeumann(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Check north neighbor
+        if (cell.y + range < size.y)
+            cellsList.Add(cells[cell.x, cell.y + range]);
+        else if (warp)
+            cellsList.Add(cells[cell.x, cell.y + range - size.y]);
+
+        // Check south neighbor
+        if (cell.y - range >= 0)
+            cellsList.Add(cells[cell.x, cell.y - range]);
+        else if (warp)
+            cellsList.Add(cells[cell.x, size.y + cell.y - range]);
+
+        // Check east neighbor
+        if (cell.x + range < size.x)
+            cellsList.Add(cells[cell.x + range, cell.y]);
+        else if (warp)
+            cellsList.Add(cells[cell.x + range - size.x, cell.y]);
+
+        // Check west neighbor
+        if (cell.x - range >= 0)
+            cellsList.Add(cells[cell.x - range, cell.y]);
+        else if (warp)
+            cellsList.Add(cells[size.x + cell.x - range, cell.y]);
+
+        for (int i = 1; i <= range; i++)
+        {
+            // +x, +y direction
+            AddNeighborCell(cellsList, cell.x + i, cell.y + i);
+
+            // -x, +y direction
+            AddNeighborCell(cellsList, cell.x - i, cell.y + i);
+
+            // +x, -y direction
+            AddNeighborCell(cellsList, cell.x + i, cell.y - i);
+
+            // -x, -y direction
+            AddNeighborCell(cellsList, cell.x - i, cell.y - i);
+        }
+
+        return cellsList.ToArray();
+    }
+
+    public Cell[] GetNeighborCellsVonNeumann(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+
+        // Check north neighbor
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.y + i < size.y)
+                cellsList.Add(cells[cell.x, cell.y + i]);
+            else if (warp)
+                cellsList.Add(cells[cell.x, cell.y + i - size.y]);
+        }
+
+        // Check south neighbor
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.y - i >= 0)
+                cellsList.Add(cells[cell.x, cell.y - i]);
+            else if (warp)
+                cellsList.Add(cells[cell.x, size.y + cell.y - i]);
+        }
+
+        // Check east neighbor
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.x + i < size.x)
+                cellsList.Add(cells[cell.x + i, cell.y]);
+            else if (warp)
+                cellsList.Add(cells[cell.x + i - size.x, cell.y]);
+        }
+
+        // Check west neighbor
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.x - i >= 0)
+                cellsList.Add(cells[cell.x - i, cell.y]);
+            else if (warp)
+                cellsList.Add(cells[size.x + cell.x - i, cell.y]);
+        }
+        for (int i = 1; i <= range; i++)
+        {
+            // +x, +y direction
+            AddNeighborCell(cellsList, cell.x + i, cell.y + i);
+
+            // -x, +y direction
+            AddNeighborCell(cellsList, cell.x - i, cell.y + i);
+
+            // +x, -y direction
+            AddNeighborCell(cellsList, cell.x + i, cell.y - i);
+
+            // -x, -y direction
+            AddNeighborCell(cellsList, cell.x - i, cell.y - i);
+        }
+
+        return cellsList.ToArray();
+    }
+
+    private void AddNeighborCell(List<Cell> cellsList, int x, int y)
+    {
+        if (warp)
+        {
+            x = WrapGridIndex(x, size.x);
+            y = WrapGridIndex(y, size.y);
+        }
+        else if (x >= size.x || y >= size.y || x < 0 || y < 0)
+        {
+            return;
+        }
+
+        cellsList.Add(cells[x, y]);
+    }
+
+    private int WrapGridIndex(int index, int gridSize)
+    {
+        return (index % gridSize + gridSize) % gridSize;
+    }
+
     public Cell[] GetNeighborCellsMoore(Cell cell)
     {
         List<Cell> cellsList = new List<Cell>();
@@ -215,42 +462,96 @@ public class MyGrid : MonoBehaviour
             {
                 if (i == 0 && j == 0)
                     continue;  // Skip the input cell itself
-
-                if (cell.x + i >= size.x || cell.y + j >= size.y || cell.x + i < 0 || cell.y + j < 0)
+                int neighborX = cell.x + i;
+                int neighborY = cell.y + j;
+                if (warp)
                 {
-                    //Debug.Log("unreachable element");
-                    continue;
+                    //warp
+                    // Wrap around the grid if neighborX or neighborY is outside the grid bounds
+                    if (neighborX >= size.x)
+                        neighborX -= size.x;
+                    else if (neighborX < 0)
+                        neighborX += size.x;
+
+                    if (neighborY >= size.y)
+                        neighborY -= size.y;
+                    else if (neighborY < 0)
+                        neighborY += size.y;
                 }
-                cellsList.Add(cells[cell.x + i, cell.y + j]);
+                else
+                {
+                    // Skip the neighbor cell if it's outside the grid bounds
+                    if (neighborX >= size.x || neighborY >= size.y || neighborX < 0 || neighborY < 0)
+                        continue;
+                }
+
+
+                cellsList.Add(cells[neighborX, neighborY]);
             }
         }
         return cellsList.ToArray();
     }
-    public Cell[] GetNeighborCellsVon(Cell cell)
+
+    public Cell[] GetNeighborCellsRemoteMoore(Cell cell)
+    {
+        List<Cell> cellsList = new List<Cell>();
+       
+        for (int i = -range; i <= range; i++)
+        {
+            for (int j = -range; j <= range; j++)
+            {
+                if (Mathf.Abs(i) == range || Mathf.Abs(j) == range)
+                {
+                    AddNeighborCell(cellsList, cell.x + i, cell.y + j);
+                }
+            }
+        }
+        return cellsList.ToArray();
+    }
+
+    public Cell[] GetNeighborCellsCross(Cell cell)
     {
         List<Cell> cellsList = new List<Cell>();
 
-        // Von Neumann neighborhood: Cross-shaped
-        // Add the four cardinal directions (north, south, east, west)
-
         // Check north neighbor
-        if (cell.y < size.y - 1)
-            cellsList.Add(cells[cell.x, cell.y + 1]);
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.y + i < size.y)
+                cellsList.Add(cells[cell.x, cell.y + i]);
+            else if (warp)
+                cellsList.Add(cells[cell.x, cell.y + i - size.y]);
+        }
 
         // Check south neighbor
-        if (cell.y > 0)
-            cellsList.Add(cells[cell.x, cell.y - 1]);
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.y - i >= 0)
+                cellsList.Add(cells[cell.x, cell.y - i]);
+            else if (warp)
+                cellsList.Add(cells[cell.x, size.y + cell.y - i]);
+        }
 
         // Check east neighbor
-        if (cell.x < size.x - 1)
-            cellsList.Add(cells[cell.x + 1, cell.y]);
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.x + i < size.x)
+                cellsList.Add(cells[cell.x + i, cell.y]);
+            else if (warp)
+                cellsList.Add(cells[cell.x + i - size.x, cell.y]);
+        }
 
         // Check west neighbor
-        if (cell.x > 0)
-            cellsList.Add(cells[cell.x - 1, cell.y]);
+        for (int i = 1; i <= range; i++)
+        {
+            if (cell.x - i >= 0)
+                cellsList.Add(cells[cell.x - i, cell.y]);
+            else if (warp)
+                cellsList.Add(cells[size.x + cell.x - i, cell.y]);
+        }
 
         return cellsList.ToArray();
     }
+
 
     public int CheckNeighborCells(Cell[] c, int current)
     {
@@ -271,7 +572,6 @@ public class MyGrid : MonoBehaviour
 
         return count;
     }
-
 
     public void GenerateCells()
     {
@@ -334,16 +634,12 @@ public class MyGrid : MonoBehaviour
     }
     public void SetNeighborhoodFromDropdown(int r)
     {
+        neighborhood = (int)r;
 
-        if (r == 0)
-        {
-            mooreNeighborhood= true;
-        }
-        else
-        {
-            mooreNeighborhood= false;
-        }
-        
+    }
+    public void ToggleWarpToggle()
+    {
+        warp = !warp;
     }
     public void KillChildren()
     {

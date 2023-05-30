@@ -11,11 +11,9 @@ public class Cell : MonoBehaviour
     public int state;
     public int nextState;
     public Color[] colorPalette;
-    //public TextMesh text;
 
     private void Awake()
     {
-        //text = GetComponentInChildren<TextMesh>();
         nextState = state;
     }
     public void SetPosition(int x, int y)
@@ -28,30 +26,8 @@ public class Cell : MonoBehaviour
         return new Vector2Int(x, y);
     }
 
-    /*public void SetSpriteColor(int c)
-    {
-        switch (c)
-        {
-            case 0:
-                color = Color.black; 
-                break;
-                case 1:
-                color = Color.red; break;
-                case 2:
-                color = Color.yellow;
-                break;
-                case 3:
-                color = Color.black;
-                break;
-                default: color = Color.gray; break;
-
-        }
-
-        GetComponent<SpriteRenderer>().color = color;
-    }*/
     public void SetSpriteColor(int c)
     {
-        //Debug.Log(c + " " + colorPalette.Length);
         GetComponent<SpriteRenderer>().color = colorPalette[c];
 
     }
@@ -67,12 +43,10 @@ public class Cell : MonoBehaviour
     public void UpdateCell()
     {
         SetState(nextState);
-        //SetNextState(nextState);
     }
     public void SetState(int s)
     {
         state = s;
-        //text.text = state + "";
         nextState = state;
         SetSpriteColor(s);
     }

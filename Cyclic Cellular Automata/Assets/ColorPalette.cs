@@ -11,26 +11,24 @@ public class ColorPalette : ScriptableObject
     private string name;
 
     [SerializeField]
-    private Color[] colors = new Color[8]; // Array to store the colors
+    private Color[] colors = new Color[8];
 
     [SerializeField]
-    private string[] hexCodes = new string[8]; // Array to store the hex codes
+    private string[] hexCodes = new string[8];
 
     private void Awake()
     {
         GenerateHexCodes();
 
     }
-    // Constructor
     public ColorPalette(string name, Color[] colors)
     {
         this.name = name;
         this.colors = colors;
-        GenerateHexCodes(); // Generate the hex codes
+        GenerateHexCodes();
     }
     public ColorPalette() { }
 
-    // Generate the hex codes for the colors
     public void GenerateHexCodes()
     {
 
@@ -38,22 +36,20 @@ public class ColorPalette : ScriptableObject
         for (int i = 0; i < colors.Length; i++)
         {
             colors[i].a = 1;
-            hexCodes[i] = "#"+ColorUtility.ToHtmlStringRGB(colors[i]);
+            hexCodes[i] = "#" + ColorUtility.ToHtmlStringRGB(colors[i]);
         }
     }
 
-    // Indexer to access colors, hex codes, and order numbers by index
     public Color this[int index]
     {
         get { return colors[index]; }
         set
         {
             colors[index] = value;
-            hexCodes[index] = ColorUtility.ToHtmlStringRGB(value); // Update the hex code
+            hexCodes[index] = ColorUtility.ToHtmlStringRGB(value);
         }
     }
 
-    // Get the hex code of a color by index
     public string GetHexCode(int index)
     {
         return hexCodes[index];
@@ -76,7 +72,6 @@ public class ColorPalette : ScriptableObject
             }
             else
             {
-                // Handle the case when the hex code parsing fails, e.g., set a default color
                 colors[i] = Color.white;
             }
         }
@@ -86,7 +81,7 @@ public class ColorPalette : ScriptableObject
 
     public ColorPaletteSerializable ToSerializable()
     {
-        ColorPaletteSerializable colorPaletteSerializable = new ColorPaletteSerializable(name,hexCodes);
+        ColorPaletteSerializable colorPaletteSerializable = new ColorPaletteSerializable(name, hexCodes);
 
         return colorPaletteSerializable;
     }
@@ -97,9 +92,9 @@ public class ColorPalette : ScriptableObject
         this.hexCodes = c.GetHexCodes();
         this.colors = PopulateColors();
     }
-    
 
-    
+
+
 }
 
 [Serializable]

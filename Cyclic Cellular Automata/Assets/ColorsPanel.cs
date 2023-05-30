@@ -5,15 +5,16 @@ using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEngine.Rendering.DebugUI;
 
 public class ColorsPanel : MonoBehaviour
 {
-    public float x;
-    public float y;
+    
     public float duration = 0.5f;
-    private RectTransform rectTransform;
-    private Vector3 hiddenPosition;
-    private Vector3 shownPosition;
+    RectTransform rectTransform;
+    public Vector3 hiddenPosition;
+    public Vector3 shownPosition;
+    public bool isPanelShown = false;
 
     public ColorCell[] colorCells;
     public ColorPalette currentPalette;
@@ -29,32 +30,31 @@ public class ColorsPanel : MonoBehaviour
 
         rectTransform = GetComponent<RectTransform>();
 
-        hiddenPosition = new Vector3(rectTransform.offsetMax.x, y, 0f);
-
-        shownPosition = new Vector3(rectTransform.offsetMax.x, 0, 0f);
-
-        rectTransform.localPosition = hiddenPosition;
     }
     private void Start()
     {
-        //PopulateColorPalettesList();
         PopulatePaletteDropdown();
-        //Debug.Log(colorPalettes[0]);
         LoadUpColorPalette(defaultPalette);
         paletteDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
         Debug.Log("Data Path: " + Application.persistentDataPath);
 
-
-
-
     }
-    private void Update()
+    public void TogglePanel()
     {
-        /* if (Input.GetKeyDown(KeyCode.Q))
-         {
-             ColorPaletteSaveLoad.Instance.SaveColorPalette(defaultPalette, "dp");
-             ColorPaletteSaveLoad.Instance.LoadColorPalette("dp");
-         }*/
+        if (isPanelShown)
+        {
+            // Hide the panel
+            rectTransform.DOAnchorPos(hiddenPosition, duration)
+                .SetEase(Ease.OutExpo)
+                .OnComplete(() => isPanelShown = false);
+        }
+        else
+        {
+            // Show the panel
+            rectTransform.DOAnchorPos(shownPosition, duration)
+                .SetEase(Ease.OutExpo)
+                .OnComplete(() => isPanelShown = true);
+        }
     }
 
     public void SaveColorPaletteOnDisk(ColorPalette palette,string name)
@@ -65,8 +65,6 @@ public class ColorsPanel : MonoBehaviour
     public void LoadColorPalettesOnDisk()
     {
         ColorPalette[] palettes= ColorPaletteSaveLoad.Instance.LoadAllColorPalettes();
-
-        //paletteDropdown.options.Add(palettes[0]);
 
     }
 
@@ -134,14 +132,6 @@ public class ColorsPanel : MonoBehaviour
         return currentPalette;
     }
 
-    public void ShowPanel()
-    {
-        rectTransform.DOLocalMove(shownPosition, duration).SetEase(Ease.OutExpo);
-    }
-    public void HidePanel()
-    {
-        rectTransform.DOLocalMove(hiddenPosition, duration).SetEase(Ease.OutExpo);
-    }
     public Color HexToColor(string hex)
     {
         // Convert hexadecimal color to Color object
