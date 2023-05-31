@@ -19,6 +19,7 @@ public class ColorGridPanel : MonoBehaviour
     {
         colorPanel.colorCells[currentStateCell].InputColor(color);
         HideGrid();
+        colorPanel.grid.ResetCells();
     }
     public void HideGrid()
     {

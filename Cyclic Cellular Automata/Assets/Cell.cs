@@ -11,9 +11,10 @@ public class Cell : MonoBehaviour
     public int state;
     public int nextState;
     public Color[] colorPalette;
-
+    SpriteRenderer spriteRenderer;
     private void Awake()
     {
+        spriteRenderer = GetComponent<SpriteRenderer>();
         nextState = state;
     }
     public void SetPosition(int x, int y)
@@ -28,17 +29,17 @@ public class Cell : MonoBehaviour
 
     public void SetSpriteColor(int c)
     {
-        GetComponent<SpriteRenderer>().color = colorPalette[c];
+        spriteRenderer.color = colorPalette[c];
 
     }
     public void SetColorPalette(Color[] palette)
     {
-        colorPalette =new Color[palette.Length];
+        //colorPalette = new Color[palette.Length];
         colorPalette = palette;
-            }
+    }
     public void SetCellScale(float k)
     {
-       gameObject.transform.localScale = new Vector3(k,k,k);
+        gameObject.transform.localScale = new Vector3(k, k, k);
     }
     public void UpdateCell()
     {
@@ -50,9 +51,12 @@ public class Cell : MonoBehaviour
         nextState = state;
         SetSpriteColor(s);
     }
-    public void SetNextState(int n) {
+    public void SetNextState(int n)
+    {
         nextState = n;
-    }public void IterateNextState() {
-        nextState +=1;
+    }
+    public void IterateNextState()
+    {
+        nextState += 1;
     }
 }

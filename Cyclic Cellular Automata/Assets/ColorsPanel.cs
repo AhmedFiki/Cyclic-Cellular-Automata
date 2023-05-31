@@ -26,11 +26,14 @@ public class ColorsPanel : MonoBehaviour
     List<ColorPalette> colorPalettes = new List<ColorPalette>();
     public TMP_Dropdown paletteDropdown;
 
+    public GameObject loadingGif;
+
     private void Awake()
     {
         ColorPaletteSaveLoad.Initialize();
 
         rectTransform = GetComponent<RectTransform>();
+        loadingGif.SetActive(false);
 
     }
     private void Start()
@@ -43,6 +46,15 @@ public class ColorsPanel : MonoBehaviour
         Debug.Log("Data Path: " + Application.persistentDataPath);
 
 
+    }
+
+    public void ShowLoadingGif()
+    {
+        loadingGif.SetActive(true);
+    }
+    public void HideLoadingGif()
+    {
+        loadingGif.SetActive(false);
     }
 
     public void SetPaletteDropdownSelection(int index)

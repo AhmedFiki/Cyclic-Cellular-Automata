@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Pool;
@@ -14,10 +15,11 @@ public class MyGrid : MonoBehaviour
     public Cell[,] cells;
     public float cellSize = 1;
     public GameObject cellPrefab;
-    
+
     public bool gridVisible = false;
 
-    public Camera camera;
+    private Vector2Int currentStep;  // Track the current step in the grid generation
+
 
     public int maxState = 2;
     public int minState = 0;
@@ -30,6 +32,8 @@ public class MyGrid : MonoBehaviour
     public Toggle warpToggle;
     public bool play = false;
     public float playSpeed = 0.5f;
+    public Button playButton;
+    public Camera camera;
 
     public Color[] colorArray;
 
@@ -61,34 +65,30 @@ public class MyGrid : MonoBehaviour
     public bool changeState;
 
     [Range(1, 8)]
-    public int minRandState;
+    public int minRandState = 1;
 
     [Range(1, 8)]
-    public int maxRandState;
+    public int maxRandState = 8;
 
     public bool changeThreshold;
 
     [Range(1, 20)]
-    public int minThreshold;
+    public int minThreshold = 1;
 
     [Range(1, 20)]
-    public int maxThreshold;
+    public int maxThreshold = 20;
 
     public bool changeRange;
 
     [Range(1, 20)]
-    public int minRange;
+    public int minRange = 1;
 
     [Range(1, 20)]
-    public int maxRange;
-
+    public int maxRange = 20;
 
     public bool changeNeighborhood;
-
     public bool changeWarp;
-
     public bool changeColor;
-
 
     private void Start()
     {
@@ -107,8 +107,8 @@ public class MyGrid : MonoBehaviour
     }
     public void UpdateUIElements()
     {
-        
-        gridSizeSlider.value=size.x;
+
+        gridSizeSlider.value = size.x;
         wantedSize = size;
         statesSlider.value = maxState;
         thresholdSlider.value = threshold;
@@ -170,6 +170,7 @@ public class MyGrid : MonoBehaviour
             return;
 
         play = true;
+        playButton.interactable = !play;
         StartCoroutine(IteratorTimer());
     }
     public void Pause()
@@ -177,6 +178,7 @@ public class MyGrid : MonoBehaviour
         if (!gridVisible)
             return;
         play = false;
+        playButton.interactable = !play;
 
     }
     public void Iterate()
@@ -704,29 +706,34 @@ public class MyGrid : MonoBehaviour
         return count;
     }
 
+
     public void GenerateCells()
     {
         size = wantedSize;
         currentSize = size;
         gridVisible = true;
         LoadColorArray(colorsPanel.GetColorArray());
-        //UpdateCameraPosition();
         KillChildren();
         cells = new Cell[size.x, size.y];
         neighborhoodCount = CalculateNeighborCount(range);
-
+        Vector2 pos;
+        int randomNumber;
+        GameObject cell;
+        Cell cellScript;
         for (int i = 0; i < size.x; i++)
         {
             for (int j = 0; j < size.y; j++)
             {
-                Vector2 pos = new Vector2(i, j);
-                GameObject cell = Instantiate(cellPrefab, pos, Quaternion.identity);
-                cell.transform.SetParent(transform);
-                Cell cellScript = cell.GetComponent<Cell>();
+                pos = new Vector2(i, j);
+                cell = Instantiate(cellPrefab, pos, Quaternion.identity);
+                //cell.transform.SetParent(transform);
+                cellScript = cell.GetComponent<Cell>();
 
-                int randomNumber = Random.Range(0, maxState + 1);
+                randomNumber = Random.Range(0, maxState + 1);
 
-                cellScript.SetPosition(i, j);
+                //cellScript.SetPosition(i, j);
+                cellScript.x = i;
+                cellScript.y = j;
                 cellScript.SetCellScale(cellSize);
                 cellScript.SetColorPalette(colorArray);
                 cellScript.SetState(randomNumber);
@@ -736,11 +743,150 @@ public class MyGrid : MonoBehaviour
             }
         }
         UpdateCamera();
+        colorsPanel.HideLoadingGif();
 
+
+    }
+
+    public float sectionSize = 10;
+    private List<Coroutine> activeSectionCoroutines = new List<Coroutine>();
+
+    //experimental
+    private IEnumerator GenerateGridParallel()
+    {
+
+        colorsPanel.ShowLoadingGif();
+        yield return new WaitForSeconds(0.1f);
+        // Activate the loading image
+
+        int sectionsX = Mathf.CeilToInt(size.x / sectionSize);
+        int sectionsY = Mathf.CeilToInt(size.y / sectionSize);
+
+        for (int sectionX = 0; sectionX < sectionsX; sectionX++)
+        {
+            for (int sectionY = 0; sectionY < sectionsY; sectionY++)
+            {
+
+                StartCoroutine(GenerateGridSection(sectionX, sectionY));
+            }
+        }
+
+        // Wait for all sections to finish generating
+        while (activeSectionCoroutines.Count > 0)
+        {
+            yield return null;
+        }
+
+        // Grid generation complete
+        colorsPanel.HideLoadingGif();  // Deactivate the loading image
+        UpdateCamera();
+
+    }
+    private IEnumerator GenerateGridSection(int sectionX, int sectionY)
+    {
+        Vector2 pos;
+        GameObject cell;
+        Cell cellScript;
+        int randomNumber;
+        for (int x = (int)(sectionX * sectionSize); x < (sectionX + 1) * sectionSize && x < size.x; x++)
+        {
+            for (int y = (int)(sectionY * sectionSize); y < (sectionY + 1) * sectionSize && y < size.y; y++)
+            {
+                // Generate cell at position (x, y)
+                pos = new Vector2(x, y);
+                cell = Instantiate(cellPrefab, pos, Quaternion.identity);
+                //cell.transform.SetParent(transform);
+                cellScript = cell.GetComponent<Cell>();
+
+                randomNumber = Random.Range(0, maxState + 1);
+
+                cellScript.SetPosition(x, y);
+                cellScript.SetCellScale(cellSize);
+                cellScript.SetColorPalette(colorArray);
+                //Debug.Log(randomNumber);
+                cellScript.SetState(randomNumber);
+
+                cells[x, y] = cellScript;
+            }
+        }
+
+        // Remove the coroutine from the active list
+        Coroutine coroutineToRemove = activeSectionCoroutines.FirstOrDefault(c => c.ToString() == sectionX + "-" + sectionY);
+        if (coroutineToRemove != null)
+        {
+            activeSectionCoroutines.Remove(coroutineToRemove);
+        }
+
+        yield return null;
+    }
+
+
+    // Generate the grid with a coroutine, 
+    public void GenerateCellsCoroutine()
+    {
+        size = wantedSize;
+        currentSize = size;
+        gridVisible = true;
+        LoadColorArray(colorsPanel.GetColorArray());
+        KillChildren();
+        cells = new Cell[size.x, size.y];
+        neighborhoodCount = CalculateNeighborCount(range);
+
+        currentStep = Vector2Int.zero;  // Start from the first step (0, 0)
+
+        // Start the coroutine for step-wise generation
+        //StartCoroutine(GenerateGridStepByStep());
+        StartCoroutine(GenerateGridParallel());
+
+    }
+    private IEnumerator GenerateGridStepByStep()
+    {
+        UpdateCamera();
+
+        colorsPanel.ShowLoadingGif();
+
+        while (currentStep.y < size.y)
+        {
+            // Generate cells row by row
+            GenerateGridStep();
+
+            // Increment the step position
+            currentStep.x++;
+            if (currentStep.x >= size.x)
+            {
+                currentStep.x = 0;
+                currentStep.y++;
+            }
+
+            // Yield to the main thread and allow other processes to execute
+            yield return null;
+        }
+
+        // Grid generation complete
+        colorsPanel.HideLoadingGif();
+
+    }
+
+    private void GenerateGridStep()
+    {
+        Vector2Int pos = currentStep;
+
+        GameObject cell = Instantiate(cellPrefab, (Vector2)pos, Quaternion.identity);
+        //cell.transform.SetParent(transform);
+        Cell cellScript = cell.GetComponent<Cell>();
+
+        int randomNumber = Random.Range(0, maxState + 1);
+
+        cellScript.SetPosition(pos.x, pos.y);
+        cellScript.SetCellScale(cellSize);
+        cellScript.SetColorPalette(colorArray);
+        cellScript.SetState(randomNumber);
+
+        cells[pos.x, pos.y] = cellScript;
     }
     public void ResetCells()
     {
-        if(currentSize != size)
+        if (currentSize != size)
         {
             GenerateCells();
         }
@@ -754,9 +900,9 @@ public class MyGrid : MonoBehaviour
                 Vector2 pos = new Vector2(i, j);
                 int randomNumber = Random.Range(0, maxState + 1);
 
-                cells[i,j].SetColorPalette(colorArray);
+                cells[i, j].SetColorPalette(colorArray);
 
-                cells[i,j].SetState(randomNumber);
+                cells[i, j].SetState(randomNumber);
 
             }
         }
@@ -825,7 +971,7 @@ public class MyGrid : MonoBehaviour
     }
     public void UpdateCamera()
     {
- 
+
 
         float cameraSize = Mathf.Max(size.x, size.y) * 0.5f + 1;
         Vector3 cameraPosition = new Vector3(size.x * 0.5f, size.x * 0.5f, -10f);
