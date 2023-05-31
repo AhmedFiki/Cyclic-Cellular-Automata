@@ -11,7 +11,7 @@ public class TweenPanel : MonoBehaviour
     public Vector2 shownPosition;
 
     private bool isPanelShown = true;
-
+    public float duration = 0.5f;
     private void Awake()
     {
         panel = GetComponent<RectTransform>();
@@ -21,17 +21,18 @@ public class TweenPanel : MonoBehaviour
         if (isPanelShown)
         {
             // Hide the panel
-            panel.DOAnchorPos(hiddenPosition, 0.5f)
+            panel.DOAnchorPos(hiddenPosition, duration)
                 .SetEase(Ease.OutExpo)
                 .OnComplete(() => isPanelShown = false);
         }
         else
         {
             // Show the panel
-            panel.DOAnchorPos(shownPosition, 0.5f)
+            panel.DOAnchorPos(shownPosition, duration)
                 .SetEase(Ease.OutExpo)
                 .OnComplete(() => isPanelShown = true);
         }
     }
+
 
 }

@@ -37,27 +37,19 @@ public class ColorsPanel : MonoBehaviour
     {
         PopulateColorPalettesList();
         PopulatePaletteDropdown();
-        LoadUpColorPalette(defaultPalette);
+        //LoadUpColorPalette(defaultPalette);
+        RandomPalette();
         paletteDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
         Debug.Log("Data Path: " + Application.persistentDataPath);
 
 
     }
 
-    private void Update()
+    public void SetPaletteDropdownSelection(int index)
     {
-      /*  float scrollInput = Input.mouseScrollDelta.y;
-
-        if (scrollInput > 0)
-        {
-            // Mouse wheel scrolled up
-            TogglePanel();
-        }
-        else if (scrollInput < 0)
-        {
-            // Mouse wheel scrolled down
-            TogglePanel();
-        }*/
+        // Update the dropdown's value and label
+        paletteDropdown.value = index;
+        paletteDropdown.RefreshShownValue();
     }
     public void RandomPalette()
     {
@@ -114,6 +106,7 @@ public class ColorsPanel : MonoBehaviour
         string selectedOption = paletteDropdown.options[index].text;
         Debug.Log("Selected option: " + selectedOption);
         LoadUpColorPalette(selectedOption);
+        SetPaletteDropdownSelection(index);
     }
 
     public ColorPalette CreateColorPalette(string name)

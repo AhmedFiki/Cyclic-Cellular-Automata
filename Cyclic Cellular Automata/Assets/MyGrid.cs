@@ -710,7 +710,7 @@ public class MyGrid : MonoBehaviour
         currentSize = size;
         gridVisible = true;
         LoadColorArray(colorsPanel.GetColorArray());
-        UpdateCameraPosition();
+        //UpdateCameraPosition();
         KillChildren();
         cells = new Cell[size.x, size.y];
         neighborhoodCount = CalculateNeighborCount(range);
@@ -735,6 +735,8 @@ public class MyGrid : MonoBehaviour
 
             }
         }
+        UpdateCamera();
+
     }
     public void ResetCells()
     {
@@ -819,6 +821,20 @@ public class MyGrid : MonoBehaviour
 
         camera.orthographicSize = size.x / 2 + 5;
         camera.transform.position = new Vector2(size.x / 2 + xOffset, size.y / 2);
+
+    }
+    public void UpdateCamera()
+    {
+ 
+
+        float cameraSize = Mathf.Max(size.x, size.y) * 0.5f + 1;
+        Vector3 cameraPosition = new Vector3(size.x * 0.5f, size.x * 0.5f, -10f);
+
+        camera.orthographicSize = cameraSize;
+        camera.transform.position = cameraPosition;
+        camera.transform.GetComponent<ObjectTween>().CalculateCamPosition(size);
+
+        camera.transform.GetComponent<ObjectTween>().TeleportToHiddenPosition();
 
     }
 
