@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
+  m_Name: PurpleSky
+  m_EditorClassIdentifier: 
+  name: PurpleSky
+  colors:
+  - {r: 0.9490197, g: 0.90196085, b: 0.47058827, a: 1}
+  - {r: 0.9333334, g: 0.56078434, b: 0.3803922, a: 1}
+  - {r: 0.7490196, g: 0.2509804, b: 0.427451, a: 1}
+  - {r: 0.40784317, g: 0.16078432, b: 0.43529415, a: 1}
+  - {r: 0.16862746, g: 0.121568635, b: 0.2784314, a: 1}
+  - {r: 0.5764706, g: 0.21176472, b: 0.43137258, a: 1}
+  - {r: 0.83921576, g: 0.41176474, b: 0.40000004, a: 1}
+  - {r: 0.9333334, g: 0.7254902, b: 0.41960788, a: 1}
+  hexCodes:
+  - '#F2E678'
+  - '#EE8F61'
+  - '#BF406D'
+  - '#68296F'
+  - '#2B1F47'
+  - '#93366E'
+  - '#D66966'
+  - '#EEB96B'

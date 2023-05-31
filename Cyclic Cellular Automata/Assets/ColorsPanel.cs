@@ -9,7 +9,9 @@ using static UnityEngine.Rendering.DebugUI;
 
 public class ColorsPanel : MonoBehaviour
 {
-    
+
+    public MyGrid grid;
+
     public float duration = 0.5f;
     RectTransform rectTransform;
     public Vector3 hiddenPosition;
@@ -33,11 +35,35 @@ public class ColorsPanel : MonoBehaviour
     }
     private void Start()
     {
+        PopulateColorPalettesList();
         PopulatePaletteDropdown();
         LoadUpColorPalette(defaultPalette);
         paletteDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
         Debug.Log("Data Path: " + Application.persistentDataPath);
 
+
+    }
+
+    private void Update()
+    {
+      /*  float scrollInput = Input.mouseScrollDelta.y;
+
+        if (scrollInput > 0)
+        {
+            // Mouse wheel scrolled up
+            TogglePanel();
+        }
+        else if (scrollInput < 0)
+        {
+            // Mouse wheel scrolled down
+            TogglePanel();
+        }*/
+    }
+    public void RandomPalette()
+    {
+        
+        int val = Random.Range(0, paletteDropdown.options.Count);
+        OnDropdownValueChanged(val);
     }
     public void TogglePanel()
     {
@@ -89,6 +115,7 @@ public class ColorsPanel : MonoBehaviour
         Debug.Log("Selected option: " + selectedOption);
         LoadUpColorPalette(selectedOption);
     }
+
     public ColorPalette CreateColorPalette(string name)
     {
         Color[] colors = new Color[colorCells.Length];
@@ -103,21 +130,27 @@ public class ColorsPanel : MonoBehaviour
 
         return newPalette;
     }
+
     public void LoadUpColorPalette(ColorPalette palette)
     {
         palette.GenerateHexCodes();
+        
         for (int i = 0; i < colorCells.Length; i++)
         {
             colorCells[i].SetCell(palette[i], palette.GetHexCode(i));
 
         }
+        grid.ResetCells();
     }
+
     public void LoadUpColorPalette(string paletteName)
     {
         ColorPalette paletteObject = colorPalettes.Find(x => x.name == paletteName);
 
         LoadUpColorPalette(paletteObject);
     }
+
+
     public ColorPalette UpdateCurrentPalette()
     {
         Color[] colors = new Color[colorCells.Length];
@@ -167,6 +200,16 @@ public class ColorsPanel : MonoBehaviour
         return array;
 
     }
+    public void PopulateColorPalettesList()
+    {
+        ColorPalette[] colorPaletteObjects = Resources.LoadAll<ColorPalette>("ColorPalettes");
+
+        foreach (ColorPalette colorPaletteObject in colorPaletteObjects)
+        {
+            colorPalettes.Add(colorPaletteObject);
+        }
+    }
+
     /*public void PopulateColorPalettesList()
     {
 

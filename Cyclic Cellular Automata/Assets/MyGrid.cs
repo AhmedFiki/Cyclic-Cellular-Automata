@@ -2,17 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Pool;
 using UnityEngine.UI;
 using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class MyGrid : MonoBehaviour
 {
     public Vector2Int size;
+    public Vector2Int wantedSize;
+    public Vector2Int currentSize;
     public Cell[,] cells;
     public float cellSize = 1;
     public GameObject cellPrefab;
-
-    public bool gridVisible=false;
+    
+    public bool gridVisible = false;
 
     public Camera camera;
 
@@ -53,6 +56,40 @@ public class MyGrid : MonoBehaviour
 
     public TMP_Dropdown neighborhoodDropdown;
 
+    [Header("Random")]
+
+    public bool changeState;
+
+    [Range(1, 8)]
+    public int minRandState;
+
+    [Range(1, 8)]
+    public int maxRandState;
+
+    public bool changeThreshold;
+
+    [Range(1, 20)]
+    public int minThreshold;
+
+    [Range(1, 20)]
+    public int maxThreshold;
+
+    public bool changeRange;
+
+    [Range(1, 20)]
+    public int minRange;
+
+    [Range(1, 20)]
+    public int maxRange;
+
+
+    public bool changeNeighborhood;
+
+    public bool changeWarp;
+
+    public bool changeColor;
+
+
     private void Start()
     {
         camera = Camera.main;
@@ -65,8 +102,58 @@ public class MyGrid : MonoBehaviour
         thresholdSlider.onValueChanged.AddListener(SetThresholdFromSlider);
         rangeSlider.onValueChanged.AddListener(SetRangeFromSlider);
         neighborhoodDropdown.onValueChanged.AddListener(SetNeighborhoodFromDropdown);
-    }
+        UpdateUIElements();
 
+    }
+    public void UpdateUIElements()
+    {
+        
+        gridSizeSlider.value=size.x;
+        wantedSize = size;
+        statesSlider.value = maxState;
+        thresholdSlider.value = threshold;
+        rangeSlider.value = range;
+        neighborhoodDropdown.value = neighborhood;
+        warpToggle.isOn = warp;
+
+    }
+    public void RandomizeSettings()
+    {
+        if (changeState)
+        {
+            maxState = Random.Range(minRandState, maxRandState + 1);
+            statesSlider.value = maxState;
+            ResetCells();
+        }
+
+        if (changeThreshold)
+        {
+            threshold = Random.Range(minThreshold, maxThreshold + 1);
+            thresholdSlider.value = threshold;
+        }
+
+        if (changeRange)
+        {
+            range = Random.Range(minRange, maxRange + 1);
+            rangeSlider.value = range;
+        }
+
+        if (changeNeighborhood)
+        {
+            neighborhood = Random.Range(0, 10); // Assumes 10 available neighborhood types
+            neighborhoodDropdown.value = neighborhood;
+        }
+
+        if (changeWarp)
+        {
+            warp = Random.value < 0.5f; // Randomly sets warp to true or false
+            warpToggle.isOn = warp;
+        }
+        if (changeColor)
+        {
+            colorsPanel.RandomPalette();
+        }
+    }
     IEnumerator IteratorTimer()
     {
 
@@ -79,20 +166,26 @@ public class MyGrid : MonoBehaviour
     }
     public void Play()
     {
+        if (!gridVisible)
+            return;
+
         play = true;
         StartCoroutine(IteratorTimer());
     }
     public void Pause()
     {
+        if (!gridVisible)
+            return;
         play = false;
 
     }
     public void Iterate()
     {
-
+        if (!gridVisible)
+            return;
         foreach (Cell cell in cells)
         {
-            if(HandleThreshold(neighborhood, cell))
+            if (HandleThreshold(neighborhood, cell))
             {
                 if (cell.state == maxState)
                 {
@@ -145,7 +238,10 @@ public class MyGrid : MonoBehaviour
             case 9:
                 return CheckNeighborCells(GetNeighborCellsTickMark(cell), cell.state) >= threshold;
                 break;
-            default: 
+            case 10:
+                return CheckNeighborCells(GetNeighborCellsLines(cell), cell.state) >= threshold;
+                break;
+            default:
                 return false;
         }
     }
@@ -495,7 +591,7 @@ public class MyGrid : MonoBehaviour
     public Cell[] GetNeighborCellsRemoteMoore(Cell cell)
     {
         List<Cell> cellsList = new List<Cell>();
-       
+
         for (int i = -range; i <= range; i++)
         {
             for (int j = -range; j <= range; j++)
@@ -551,7 +647,42 @@ public class MyGrid : MonoBehaviour
 
         return cellsList.ToArray();
     }
+    public Cell[] GetNeighborCellsLines(Cell cell)
+    {
 
+
+        List<Cell> cellsList = new List<Cell>();
+
+        int x = cell.x;
+        int y = cell.y;
+        List<int> radii = new List<int>(); // List of random radii values
+
+        for (int i = 0; i < range; i++)
+        {
+            int randomRadius = Random.Range(0, range + 1);
+            radii.Add(randomRadius);
+        }
+
+
+        for (int i = 0; i < radii.Count; i++)
+        {
+            int radius = radii[i];
+            for (int dx = -radius; dx <= radius; dx++)
+            {
+                for (int dy = -radius; dy <= radius; dy++)
+                {
+                    if (dx == 0 && dy == 0)
+                        continue;
+
+                    AddNeighborCell(cellsList, x + dx, y + dy);
+                }
+            }
+        }
+
+        return cellsList.ToArray();
+
+
+    }
 
     public int CheckNeighborCells(Cell[] c, int current)
     {
@@ -575,6 +706,9 @@ public class MyGrid : MonoBehaviour
 
     public void GenerateCells()
     {
+        size = wantedSize;
+        currentSize = size;
+        gridVisible = true;
         LoadColorArray(colorsPanel.GetColorArray());
         UpdateCameraPosition();
         KillChildren();
@@ -590,12 +724,10 @@ public class MyGrid : MonoBehaviour
                 cell.transform.SetParent(transform);
                 Cell cellScript = cell.GetComponent<Cell>();
 
-                //generate random number per cell,  (CHANGE LATER)
                 int randomNumber = Random.Range(0, maxState + 1);
 
                 cellScript.SetPosition(i, j);
                 cellScript.SetCellScale(cellSize);
-                //Debug.Log("grid palette len: " + colorPalette.Length);
                 cellScript.SetColorPalette(colorArray);
                 cellScript.SetState(randomNumber);
 
@@ -604,9 +736,34 @@ public class MyGrid : MonoBehaviour
             }
         }
     }
+    public void ResetCells()
+    {
+        if(currentSize != size)
+        {
+            GenerateCells();
+        }
+
+        LoadColorArray(colorsPanel.GetColorArray());
+
+        for (int i = 0; i < size.x; i++)
+        {
+            for (int j = 0; j < size.y; j++)
+            {
+                Vector2 pos = new Vector2(i, j);
+                int randomNumber = Random.Range(0, maxState + 1);
+
+                cells[i,j].SetColorPalette(colorArray);
+
+                cells[i,j].SetState(randomNumber);
+
+            }
+        }
+    }
+
+
     public void SetGridSizeFromSlider(float gridSize)
     {
-        size = new Vector2Int((int)gridSize, (int)gridSize);
+        wantedSize = new Vector2Int((int)gridSize, (int)gridSize);
         gridSizeText.text = (int)gridSize + "x" + (int)gridSize;
     }
     public void SetSpeedFromSlider(float speed)
