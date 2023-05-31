@@ -29,12 +29,13 @@ public class Cell : MonoBehaviour
 
     public void SetSpriteColor(int c)
     {
+       
         spriteRenderer.color = colorPalette[c];
 
     }
     public void SetColorPalette(Color[] palette)
     {
-        //colorPalette = new Color[palette.Length];
+        colorPalette = new Color[palette.Length];
         colorPalette = palette;
     }
     public void SetCellScale(float k)
@@ -43,12 +44,19 @@ public class Cell : MonoBehaviour
     }
     public void UpdateCell()
     {
+        if(nextState > 7) { Debug.Log("FUCKIN UPDATE CELL"); }
         SetState(nextState);
+
     }
     public void SetState(int s)
     {
         state = s;
         nextState = state;
+        if (s > colorPalette.Length - 1)
+        {
+            Debug.Log("s:" + s + ", cp.len:" + colorPalette.Length + ", cell:"+x+" "+y);
+            return;
+        }
         SetSpriteColor(s);
     }
     public void SetNextState(int n)

@@ -121,7 +121,7 @@ public class MyGrid : MonoBehaviour
     {
         if (changeState)
         {
-            maxState = Random.Range(minRandState, maxRandState + 1);
+            maxState = Random.Range(minRandState, maxRandState );
             statesSlider.value = maxState;
             ResetCells();
         }
@@ -709,11 +709,14 @@ public class MyGrid : MonoBehaviour
 
     public void GenerateCells()
     {
+        UpdateCamera();
+
         size = wantedSize;
         currentSize = size;
         gridVisible = true;
         LoadColorArray(colorsPanel.GetColorArray());
-        KillChildren();
+        //KillChildren();
+        HideCells();
         cells = new Cell[size.x, size.y];
         neighborhoodCount = CalculateNeighborCount(range);
         Vector2 pos;
@@ -724,16 +727,15 @@ public class MyGrid : MonoBehaviour
         {
             for (int j = 0; j < size.y; j++)
             {
-                pos = new Vector2(i, j);
-                cell = Instantiate(cellPrefab, pos, Quaternion.identity);
-                //cell.transform.SetParent(transform);
+
+
+                cell = Instantiate(cellPrefab, new Vector2(i, j), Quaternion.identity);
                 cellScript = cell.GetComponent<Cell>();
 
-                randomNumber = Random.Range(0, maxState + 1);
 
-                //cellScript.SetPosition(i, j);
-                cellScript.x = i;
-                cellScript.y = j;
+                randomNumber = Random.Range(0, maxState );
+                //Debug.Log(randomNumber);
+                cellScript.SetPosition(i, j);
                 cellScript.SetCellScale(cellSize);
                 cellScript.SetColorPalette(colorArray);
                 cellScript.SetState(randomNumber);
@@ -743,7 +745,6 @@ public class MyGrid : MonoBehaviour
             }
         }
         UpdateCamera();
-        colorsPanel.HideLoadingGif();
 
 
     }
@@ -755,7 +756,6 @@ public class MyGrid : MonoBehaviour
     private IEnumerator GenerateGridParallel()
     {
 
-        colorsPanel.ShowLoadingGif();
         yield return new WaitForSeconds(0.1f);
         // Activate the loading image
 
@@ -778,7 +778,6 @@ public class MyGrid : MonoBehaviour
         }
 
         // Grid generation complete
-        colorsPanel.HideLoadingGif();  // Deactivate the loading image
         UpdateCamera();
 
     }
@@ -843,7 +842,6 @@ public class MyGrid : MonoBehaviour
     {
         UpdateCamera();
 
-        colorsPanel.ShowLoadingGif();
 
         while (currentStep.y < size.y)
         {
@@ -863,7 +861,6 @@ public class MyGrid : MonoBehaviour
         }
 
         // Grid generation complete
-        colorsPanel.HideLoadingGif();
 
     }
 
@@ -881,6 +878,7 @@ public class MyGrid : MonoBehaviour
         cellScript.SetCellScale(cellSize);
         cellScript.SetColorPalette(colorArray);
         cellScript.SetState(randomNumber);
+        //Debug.Log(randomNumber);
 
         cells[pos.x, pos.y] = cellScript;
     }
@@ -898,11 +896,13 @@ public class MyGrid : MonoBehaviour
             for (int j = 0; j < size.y; j++)
             {
                 Vector2 pos = new Vector2(i, j);
-                int randomNumber = Random.Range(0, maxState + 1);
+                int randomNumber = Random.Range(0, maxState );
 
                 cells[i, j].SetColorPalette(colorArray);
 
                 cells[i, j].SetState(randomNumber);
+                //Debug.Log(randomNumber);
+
 
             }
         }
@@ -946,9 +946,19 @@ public class MyGrid : MonoBehaviour
     {
         warp = !warp;
     }
+    public void HideCells()
+    {
+        foreach (var cell in cells)
+        {
+            if(cell != null)
+            cell.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+        }
+    }
     public void KillChildren()
     {
+
         int childCount = transform.childCount;
+
         for (int i = childCount - 1; i >= 0; i--)
         {
             GameObject child = transform.GetChild(i).gameObject;
@@ -979,7 +989,6 @@ public class MyGrid : MonoBehaviour
         camera.orthographicSize = cameraSize;
         camera.transform.position = cameraPosition;
         camera.transform.GetComponent<ObjectTween>().CalculateCamPosition(size);
-
         camera.transform.GetComponent<ObjectTween>().TeleportToHiddenPosition();
 
     }
