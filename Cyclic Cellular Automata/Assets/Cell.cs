@@ -10,6 +10,7 @@ public class Cell : MonoBehaviour
     public int y;
     public int state;
     public int nextState;
+    public int previousState;
     public Color[] colorPalette;
     SpriteRenderer spriteRenderer;
     private void Awake()
@@ -50,6 +51,7 @@ public class Cell : MonoBehaviour
     }
     public void SetState(int s)
     {
+        previousState = state;
         state = s;
         nextState = state;
        /* if (s > colorPalette.Length - 1)

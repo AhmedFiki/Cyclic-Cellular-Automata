@@ -24,6 +24,7 @@ public class RandomSettingsPanel : MonoBehaviour
     public Toggle neighborhoodToggle;
     public Toggle warpToggle;
     public Toggle colorsToggle;
+    public Toggle skipStableToggle;
 
     public Slider statesMin;
     public Slider statesMax;
@@ -149,7 +150,10 @@ public class RandomSettingsPanel : MonoBehaviour
     {
         grid.changeColor = !grid.changeColor;
     }
-
+    public void ToggleSkipStable()
+    {
+        grid.skipStable = !grid.skipStable;
+    }
 
     public void TogglePanel()
     {

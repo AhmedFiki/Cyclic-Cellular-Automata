@@ -26,10 +26,12 @@ public class MyGrid : MonoBehaviour
     public int range = 1;
     public int threshold = 2;
     public int neighborhoodCount;
+    public int skipStableTestIterations = 5;
 
     public int neighborhood = 0;
     public bool warp = false;
     public Toggle warpToggle;
+    public bool stableState = false;
     public bool play = false;
     public float playSpeed = 0.5f;
     public Button playButton;
@@ -89,7 +91,7 @@ public class MyGrid : MonoBehaviour
     public bool changeNeighborhood;
     public bool changeWarp;
     public bool changeColor;
-
+    public bool skipStable;
     private void Start()
     {
         camera = Camera.main;
@@ -103,6 +105,11 @@ public class MyGrid : MonoBehaviour
         rangeSlider.onValueChanged.AddListener(SetRangeFromSlider);
         neighborhoodDropdown.onValueChanged.AddListener(SetNeighborhoodFromDropdown);
         UpdateUIElements();
+
+    }
+    private void Update()
+    {
+      // stableState = IsGridStable();
 
     }
     public void UpdateUIElements()
@@ -154,11 +161,30 @@ public class MyGrid : MonoBehaviour
             colorsPanel.RandomPalette();
         }
         ResetCells();
+        if(skipStable)
+        {
+            StartCoroutine(SkipStableGrids());
+        }
     }
-    IEnumerator IteratorTimer()
+    IEnumerator SkipStableGrids()
     {
 
+        for(int i=0; i <skipStableTestIterations; i++)
+        {
+            Iterate();
+ 
+        }
+        if (stableState && play)
+        {
+            RandomizeSettings();
+        }
+        yield return null;
+    }
+
+    IEnumerator IteratorTimer()
+    {
         Iterate();
+
         yield return new WaitForSeconds(playSpeed);
 
         if (play)
@@ -205,6 +231,8 @@ public class MyGrid : MonoBehaviour
             }
         }
         UpdateCells();
+        stableState = IsGridStable();
+
 
     }
     bool HandleThreshold(int neighborhood, Cell cell)
@@ -249,6 +277,33 @@ public class MyGrid : MonoBehaviour
     public int GetCellState(int x, int y)
     {
         return cells[x, y].state;
+    }
+
+    public bool IsGridStable()
+    {
+        // Check if all cells have the same state as their neighbors in the previous iteration
+        for (int i = 0; i < cells.GetLength(0); i++)
+        {
+            for (int j = 0; j < cells.GetLength(1); j++)
+            {
+
+                Cell cell = cells[i, j];
+                int currentState = cell.state;
+                int previousState = cell.previousState;
+
+                // Compare the current state with the previous state of the cell
+                if (currentState != previousState)
+                {
+                    //Debug.Log();
+
+                    // Grid is not stable, at least one cell has changed
+                    return false;
+                }
+            }
+        }
+
+        // Grid is stable, all cells have the same state as their neighbors in the previous iteration
+        return true;
     }
 
     public int CalculateNeighborCount(int range)
@@ -700,7 +755,7 @@ public class MyGrid : MonoBehaviour
 
     public void GenerateCells()
     {
-
+        stableState = false;
         size = wantedSize;
         currentSize = size;
         gridVisible = true;
