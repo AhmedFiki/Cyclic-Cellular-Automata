@@ -58,6 +58,10 @@ public class ColorPalette : ScriptableObject
     {
         hexCodes[index] = hexCode;
     }
+    public Color[] GetColors()
+    {
+        return colors;
+    }
 
     public Color[] PopulateColors()
     {

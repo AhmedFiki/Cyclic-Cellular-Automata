@@ -3,9 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.Pool;
 using UnityEngine.UI;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public class MyGrid : MonoBehaviour
 {
@@ -46,7 +44,10 @@ public class MyGrid : MonoBehaviour
     [Header("Sliders")]
 
     public Slider gridSizeSlider;
-    public TMP_Text gridSizeText;
+    public TMP_Text gridSizeText; 
+    
+    public Slider cellSizeSlider;
+    public TMP_Text cellSizeText;
 
     public Slider speedSlider;
     public TMP_Text speedText;
@@ -99,6 +100,7 @@ public class MyGrid : MonoBehaviour
         neighborhoodCount = CalculateNeighborCount(range);
 
         gridSizeSlider.onValueChanged.AddListener(SetGridSizeFromSlider);
+        cellSizeSlider.onValueChanged.AddListener(SetCellSizeFromSlider);
         speedSlider.onValueChanged.AddListener(SetSpeedFromSlider);
         statesSlider.onValueChanged.AddListener(SetStatesFromSlider);
         thresholdSlider.onValueChanged.AddListener(SetThresholdFromSlider);
@@ -107,11 +109,7 @@ public class MyGrid : MonoBehaviour
         UpdateUIElements();
 
     }
-    private void Update()
-    {
-      // stableState = IsGridStable();
 
-    }
     public void UpdateUIElements()
     {
 
@@ -958,6 +956,12 @@ public class MyGrid : MonoBehaviour
     {
         wantedSize = new Vector2Int((int)gridSize, (int)gridSize);
         gridSizeText.text = (int)gridSize + "x" + (int)gridSize;
+    }
+    public void SetCellSizeFromSlider(float cs)
+    {
+        cellSize = cs;
+        cellSizeText.text = (Mathf.Round(cellSize * 100)) / 100.0 + "";
+
     }
     public void SetSpeedFromSlider(float speed)
     {

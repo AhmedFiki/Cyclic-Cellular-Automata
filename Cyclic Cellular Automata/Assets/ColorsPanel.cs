@@ -27,7 +27,8 @@ public class ColorsPanel : MonoBehaviour
     public TMP_Dropdown paletteDropdown;
 
     public GameObject loadingGif;
-
+    public TextColorAnimator textColorAnimator;
+    
     private void Awake()
     {
         ColorPaletteSaveLoad.Initialize();
@@ -65,7 +66,7 @@ public class ColorsPanel : MonoBehaviour
     }
     public void RandomPalette()
     {
-        
+
         int val = Random.Range(0, paletteDropdown.options.Count);
         OnDropdownValueChanged(val);
     }
@@ -87,14 +88,14 @@ public class ColorsPanel : MonoBehaviour
         }
     }
 
-    public void SaveColorPaletteOnDisk(ColorPalette palette,string name)
+    public void SaveColorPaletteOnDisk(ColorPalette palette, string name)
     {
         ColorPaletteSaveLoad.Instance.SaveColorPalette(palette, name);
 
     }
     public void LoadColorPalettesOnDisk()
     {
-        ColorPalette[] palettes= ColorPaletteSaveLoad.Instance.LoadAllColorPalettes();
+        ColorPalette[] palettes = ColorPaletteSaveLoad.Instance.LoadAllColorPalettes();
 
     }
 
@@ -119,6 +120,7 @@ public class ColorsPanel : MonoBehaviour
         //Debug.Log("Selected option: " + selectedOption);
         LoadUpColorPalette(selectedOption);
         SetPaletteDropdownSelection(index);
+
     }
 
     public ColorPalette CreateColorPalette(string name)
@@ -139,12 +141,15 @@ public class ColorsPanel : MonoBehaviour
     public void LoadUpColorPalette(ColorPalette palette)
     {
         palette.GenerateHexCodes();
-        
+
         for (int i = 0; i < colorCells.Length; i++)
         {
             colorCells[i].SetCell(palette[i], palette.GetHexCode(i));
 
         }
+        currentPalette = palette;
+        textColorAnimator.SetPalette(currentPalette);
+
         grid.ResetCells();
     }
 
@@ -165,7 +170,7 @@ public class ColorsPanel : MonoBehaviour
             colors[i] = colorCells[i].color;
 
         }
-        currentPalette = new ColorPalette("CurrentPalette",colors);
+        currentPalette = new ColorPalette("CurrentPalette", colors);
 
         return currentPalette;
     }
