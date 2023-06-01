@@ -116,7 +116,7 @@ public class ColorsPanel : MonoBehaviour
     public void OnDropdownValueChanged(int index)
     {
         string selectedOption = paletteDropdown.options[index].text;
-        Debug.Log("Selected option: " + selectedOption);
+        //Debug.Log("Selected option: " + selectedOption);
         LoadUpColorPalette(selectedOption);
         SetPaletteDropdownSelection(index);
     }

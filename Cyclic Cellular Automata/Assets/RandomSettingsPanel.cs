@@ -90,13 +90,13 @@ public class RandomSettingsPanel : MonoBehaviour
     {
         statesMin.value = f;
         statesTextMin.text = ""+(int)f;
-        grid.minRandState = (int)f;
+        grid.minRandState = (int)f-1;
     }
     public void SetStatesMax(float f)
     {
         statesMax.value = f;
         statesTextMax.text = "" + (int)f;
-        grid.maxRandState = (int)f;
+        grid.maxRandState = (int)f-1;
 
     }
     public void SetThresholdMin(float f)

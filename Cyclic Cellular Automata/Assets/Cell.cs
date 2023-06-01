@@ -52,11 +52,11 @@ public class Cell : MonoBehaviour
     {
         state = s;
         nextState = state;
-        if (s > colorPalette.Length - 1)
+       /* if (s > colorPalette.Length - 1)
         {
             Debug.Log("s:" + s + ", cp.len:" + colorPalette.Length + ", cell:"+x+" "+y);
             return;
-        }
+        }*/
         SetSpriteColor(s);
     }
     public void SetNextState(int n)

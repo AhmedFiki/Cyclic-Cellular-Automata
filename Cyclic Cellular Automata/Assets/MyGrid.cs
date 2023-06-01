@@ -110,7 +110,7 @@ public class MyGrid : MonoBehaviour
 
         gridSizeSlider.value = size.x;
         wantedSize = size;
-        statesSlider.value = maxState;
+        statesSlider.value = maxState+1;
         thresholdSlider.value = threshold;
         rangeSlider.value = range;
         neighborhoodDropdown.value = neighborhood;
@@ -122,7 +122,7 @@ public class MyGrid : MonoBehaviour
         if (changeState)
         {
             maxState = Random.Range(minRandState, maxRandState );
-            statesSlider.value = maxState;
+            statesSlider.value = maxState + 1;
             ResetCells();
         }
 
@@ -153,6 +153,7 @@ public class MyGrid : MonoBehaviour
         {
             colorsPanel.RandomPalette();
         }
+        ResetCells();
     }
     IEnumerator IteratorTimer()
     {
@@ -212,37 +213,26 @@ public class MyGrid : MonoBehaviour
         {
             case 0:
                 return CheckNeighborCells(GetNeighborCellsMoore(cell), cell.state) >= threshold;
-                break;
             case 1:
                 return CheckNeighborCells(GetNeighborCellsCross(cell), cell.state) >= threshold;
-                break;
             case 2:
                 return CheckNeighborCells(GetNeighborCellsCustom(cell), cell.state) >= threshold;
-                break;
             case 3:
                 return CheckNeighborCells(GetNeighborCellsRemoteMoore(cell), cell.state) >= threshold;
-                break;
             case 4:
                 return CheckNeighborCells(GetNeighborCellsVonNeumann(cell), cell.state) >= threshold;
-                break;
             case 5:
                 return CheckNeighborCells(GetRemoteNeighborCellsVonNeumann(cell), cell.state) >= threshold;
-                break;
             case 6:
                 return CheckNeighborCells(GetNeighborCellsS(cell), cell.state) >= threshold;
-                break;
             case 7:
                 return CheckNeighborCells(GetNeighborCellsBlade(cell), cell.state) >= threshold;
-                break;
             case 8:
                 return CheckNeighborCells(GetNeighborCellsCorners(cell), cell.state) >= threshold;
-                break;
             case 9:
                 return CheckNeighborCells(GetNeighborCellsTickMark(cell), cell.state) >= threshold;
-                break;
             case 10:
                 return CheckNeighborCells(GetNeighborCellsLines(cell), cell.state) >= threshold;
-                break;
             default:
                 return false;
         }
@@ -560,6 +550,7 @@ public class MyGrid : MonoBehaviour
             {
                 if (i == 0 && j == 0)
                     continue;  // Skip the input cell itself
+
                 int neighborX = cell.x + i;
                 int neighborY = cell.y + j;
                 if (warp)
@@ -709,7 +700,6 @@ public class MyGrid : MonoBehaviour
 
     public void GenerateCells()
     {
-        UpdateCamera();
 
         size = wantedSize;
         currentSize = size;
@@ -728,12 +718,12 @@ public class MyGrid : MonoBehaviour
             for (int j = 0; j < size.y; j++)
             {
 
-
-                cell = Instantiate(cellPrefab, new Vector2(i, j), Quaternion.identity);
+                pos = new Vector2(i, j);
+                cell = Instantiate(cellPrefab, pos, Quaternion.identity);
                 cellScript = cell.GetComponent<Cell>();
 
 
-                randomNumber = Random.Range(0, maxState );
+                randomNumber = Random.Range(0, maxState + 1 );
                 //Debug.Log(randomNumber);
                 cellScript.SetPosition(i, j);
                 cellScript.SetCellScale(cellSize);
@@ -896,7 +886,7 @@ public class MyGrid : MonoBehaviour
             for (int j = 0; j < size.y; j++)
             {
                 Vector2 pos = new Vector2(i, j);
-                int randomNumber = Random.Range(0, maxState );
+                int randomNumber = Random.Range(0, maxState +1);
 
                 cells[i, j].SetColorPalette(colorArray);
 
