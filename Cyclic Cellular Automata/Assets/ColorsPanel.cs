@@ -68,7 +68,7 @@ public class ColorsPanel : MonoBehaviour
     {
 
         int val = Random.Range(0, paletteDropdown.options.Count);
-        Debug.Log(paletteDropdown.options.Count);
+        //Debug.Log(paletteDropdown.options.Count);
         OnDropdownValueChanged(val);
     }
     public void TogglePanel()

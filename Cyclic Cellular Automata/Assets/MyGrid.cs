@@ -4,9 +4,13 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static UnityEditor.PlayerSettings;
 
 public class MyGrid : MonoBehaviour
 {
+
+
+
     public Vector2Int size;
     public Vector2Int wantedSize;
     public Vector2Int currentSize;
@@ -44,8 +48,8 @@ public class MyGrid : MonoBehaviour
     [Header("Sliders")]
 
     public Slider gridSizeSlider;
-    public TMP_Text gridSizeText; 
-    
+    public TMP_Text gridSizeText;
+
     public Slider cellSizeSlider;
     public TMP_Text cellSizeText;
 
@@ -93,10 +97,18 @@ public class MyGrid : MonoBehaviour
     public bool changeWarp;
     public bool changeColor;
     public bool skipStable;
+
+    [Header("Experimental")]
+
+    public Vector2Int maxSize;
+
+
+
     private void Start()
     {
+        GenerateCellsOneTime();
         camera = Camera.main;
-        cells = new Cell[size.x, size.y];
+        //cells = new Cell[size.x, size.y];
         neighborhoodCount = CalculateNeighborCount(range);
 
         gridSizeSlider.onValueChanged.AddListener(SetGridSizeFromSlider);
@@ -115,7 +127,7 @@ public class MyGrid : MonoBehaviour
 
         gridSizeSlider.value = size.x;
         wantedSize = size;
-        statesSlider.value = maxState+1;
+        statesSlider.value = maxState + 1;
         thresholdSlider.value = threshold;
         rangeSlider.value = range;
         neighborhoodDropdown.value = neighborhood;
@@ -129,7 +141,7 @@ public class MyGrid : MonoBehaviour
     {
         if (changeState)
         {
-            maxState = Random.Range(minRandState-1, maxRandState );
+            maxState = Random.Range(minRandState - 1, maxRandState);
             statesSlider.value = maxState + 1;
             ResetCells();
         }
@@ -148,7 +160,7 @@ public class MyGrid : MonoBehaviour
 
         if (changeNeighborhood)
         {
-            neighborhood = Random.Range(0,neighborhoodDropdown.options.Count); // Assumes 10 available neighborhood types
+            neighborhood = Random.Range(0, neighborhoodDropdown.options.Count); // Assumes 10 available neighborhood types
             neighborhoodDropdown.value = neighborhood;
         }
 
@@ -162,7 +174,7 @@ public class MyGrid : MonoBehaviour
             colorsPanel.RandomPalette();
         }
         ResetCells();
-        if(skipStable)
+        if (skipStable)
         {
             StartCoroutine(SkipStableGrids());
         }
@@ -170,10 +182,10 @@ public class MyGrid : MonoBehaviour
     IEnumerator SkipStableGrids()
     {
 
-        for(int i=0; i <skipStableTestIterations; i++)
+        for (int i = 0; i < skipStableTestIterations; i++)
         {
             Iterate();
- 
+
         }
         if (stableState && play)
         {
@@ -753,17 +765,123 @@ public class MyGrid : MonoBehaviour
         return count;
     }
 
+    public void GenerateCellsOneTime()
+    {
+        //Debug.Log("gen 1 time");
+        cells = new Cell[maxSize.x, maxSize.y];
+        LoadColorArray(colorsPanel.GetColorArray());
 
+        Vector2 pos;
+        int randomNumber;
+        GameObject cell;
+        Cell cellScript;
+        for (int i = 0; i < maxSize.x; i++)
+        {
+            for (int j = 0; j < maxSize.y; j++)
+            {
+
+                pos = new Vector2(i, j);
+
+                cell = Instantiate(cellPrefab, pos, Quaternion.identity);
+                cellScript = cell.GetComponent<Cell>();
+
+
+                randomNumber = Random.Range(0, maxState + 1);
+                //Debug.Log(randomNumber);
+                cellScript.SetPosition(i, j);
+                cellScript.SetCellScale(cellSize);
+                cellScript.SetColorPalette(colorArray);
+                cellScript.SetState(randomNumber);
+
+                cells[i, j] = cellScript;
+
+
+            }
+        }
+    }
+    public void ResizeGrid()
+    {
+        //Debug.Log("resizing");
+        int x= (int)gridSizeSlider.value;
+        int y= (int)gridSizeSlider.value;
+        int randomNumber;
+        size = new Vector2Int(x, y);
+        for (int i = 0; i < maxSize.x-1; i++)
+        {
+            for (int j = 0; j < maxSize.y-1; j++)
+            {
+
+
+                if(i< x-1  && j< y-1)
+                {
+                    randomNumber = Random.Range(0, maxState + 1);
+                    //Debug.Log("ij:" + i+" "+j);
+
+                    cells[i, j].SetCellScale(cellSize);
+                    cells[i, j].SetState(randomNumber);
+                }
+                else
+                {
+                    //Debug.Log(cells.GetLength(0)+":l i:"+i+" j:"+j);
+                    //if(i<cells.GetLength(0)&&j<cells.GetLength(1))
+                    
+                    cells[i, j].gameObject.GetComponent<SpriteRenderer>().color=Color.black;
+                }
+
+
+
+            }
+        }
+
+
+    }
+    public void ResetCells()
+    {
+        if (currentSize != size)
+        {
+            GenerateCells();
+            return;
+        }
+
+        LoadColorArray(colorsPanel.GetColorArray());
+
+        for (int i = 0; i < size.x; i++)
+        {
+            for (int j = 0; j < size.y; j++)
+            {
+                Vector2 pos = new Vector2(i, j);
+                int randomNumber = Random.Range(0, maxState + 1);
+
+                cells[i, j].SetColorPalette(colorArray);
+
+                cells[i, j].SetState(randomNumber);
+                //Debug.Log(randomNumber);
+
+
+            }
+        }
+    }
     public void GenerateCells()
     {
+        Debug.Log("Generated cells");
         stableState = false;
         size = wantedSize;
         currentSize = size;
         gridVisible = true;
         LoadColorArray(colorsPanel.GetColorArray());
         //KillChildren();
-        HideCells();
-        cells = new Cell[size.x, size.y];
+        //HideCells();
+        KillCells();
+        if (cells.Length < size.x || cells.Length > size.y)
+        {
+            //Debug.Log(size.x + " " + cells.GetLength(0));
+            cells = new Cell[size.x, size.y];
+
+        }
+        else
+        {
+
+        }
         neighborhoodCount = CalculateNeighborCount(range);
         Vector2 pos;
         int randomNumber;
@@ -775,11 +893,15 @@ public class MyGrid : MonoBehaviour
             {
 
                 pos = new Vector2(i, j);
+                if (cells[i, j] != null)
+                {
+                    //Debug.Log(pos + ": already exists");
+                }
                 cell = Instantiate(cellPrefab, pos, Quaternion.identity);
                 cellScript = cell.GetComponent<Cell>();
 
 
-                randomNumber = Random.Range(0, maxState + 1 );
+                randomNumber = Random.Range(0, maxState + 1);
                 //Debug.Log(randomNumber);
                 cellScript.SetPosition(i, j);
                 cellScript.SetCellScale(cellSize);
@@ -928,31 +1050,7 @@ public class MyGrid : MonoBehaviour
 
         cells[pos.x, pos.y] = cellScript;
     }
-    public void ResetCells()
-    {
-        if (currentSize != size)
-        {
-            GenerateCells();
-        }
-
-        LoadColorArray(colorsPanel.GetColorArray());
-
-        for (int i = 0; i < size.x; i++)
-        {
-            for (int j = 0; j < size.y; j++)
-            {
-                Vector2 pos = new Vector2(i, j);
-                int randomNumber = Random.Range(0, maxState +1);
-
-                cells[i, j].SetColorPalette(colorArray);
-
-                cells[i, j].SetState(randomNumber);
-                //Debug.Log(randomNumber);
-
-
-            }
-        }
-    }
+   
 
 
     public void SetGridSizeFromSlider(float gridSize)
@@ -1002,8 +1100,8 @@ public class MyGrid : MonoBehaviour
     {
         foreach (var cell in cells)
         {
-            if(cell != null)
-            cell.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
+            if (cell != null)
+                cell.gameObject.GetComponent<SpriteRenderer>().color = Color.black;
         }
     }
     public void KillChildren()
@@ -1017,7 +1115,15 @@ public class MyGrid : MonoBehaviour
             Destroy(child);
         }
     }
+    public void KillCells()
+    {
+        foreach (var cell in cells)
+        {
+            if (cell != null)
+                Destroy(cell.gameObject);
+        }
 
+    }
     public void LoadColorArray(Color[] array)
     {
         colorArray = array;
