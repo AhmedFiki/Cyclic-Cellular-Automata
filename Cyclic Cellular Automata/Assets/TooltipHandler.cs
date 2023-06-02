@@ -7,7 +7,7 @@ using TMPro;
 public class TooltipHandler : MonoBehaviour
 {
  public static TooltipHandler Instance;
-
+    public CanvasGroup canvasGroup;
     public TooltipGameObject tooltip;
 
     private void Awake()

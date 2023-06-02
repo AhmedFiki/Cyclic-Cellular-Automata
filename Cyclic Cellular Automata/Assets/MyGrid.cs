@@ -121,12 +121,15 @@ public class MyGrid : MonoBehaviour
         neighborhoodDropdown.value = neighborhood;
         warpToggle.isOn = warp;
 
+
+
+
     }
     public void RandomizeSettings()
     {
         if (changeState)
         {
-            maxState = Random.Range(minRandState, maxRandState );
+            maxState = Random.Range(minRandState-1, maxRandState );
             statesSlider.value = maxState + 1;
             ResetCells();
         }
@@ -145,7 +148,7 @@ public class MyGrid : MonoBehaviour
 
         if (changeNeighborhood)
         {
-            neighborhood = Random.Range(0, 10); // Assumes 10 available neighborhood types
+            neighborhood = Random.Range(0,neighborhoodDropdown.options.Count); // Assumes 10 available neighborhood types
             neighborhoodDropdown.value = neighborhood;
         }
 

@@ -69,21 +69,29 @@ public class RandomSettingsPanel : MonoBehaviour
 
         statesMin.minValue = 1;
         statesMin.maxValue = grid.maxRandState;
+        statesMin.value = grid.minRandState;
+
         statesMax.minValue = 1;
         statesMax.maxValue = grid.maxRandState;
         statesMax.value = statesMax.maxValue;
 
+
         thresholdMin.minValue = 1;
-        thresholdMin.maxValue = grid.maxThreshold;
+        thresholdMin.maxValue = grid.thresholdSlider.maxValue;
+        thresholdMin.value = grid.minThreshold;
+
         thresholdMax.minValue = 1;
-        thresholdMax.maxValue = grid.maxThreshold;
-        thresholdMax.value = thresholdMax.maxValue;
+        thresholdMax.maxValue = grid.thresholdSlider.maxValue;
+        thresholdMax.value = grid.maxThreshold;
+
 
         rangeMin.minValue = 1;
-        rangeMin.maxValue = grid.maxRange;
+        rangeMin.maxValue = grid.rangeSlider.maxValue;
+        rangeMin.value = grid.minRange;
+
         rangeMax.minValue = 1;
-        rangeMax.maxValue = grid.maxRange;
-        rangeMax.value = rangeMax.maxValue;
+        rangeMax.maxValue = grid.rangeSlider.maxValue;
+        rangeMax.value = grid.maxRange;
 
 
     }

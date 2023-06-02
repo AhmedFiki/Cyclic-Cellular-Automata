@@ -501,6 +501,8 @@ MonoBehaviour:
 
     (Press the
     settings button to open the randomization settings)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &7491090
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -860,6 +862,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: The number of the state representing its color.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &23317026
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2924,7 +2928,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 1846914576}
-  m_RootOrder: 1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2986,15 +2990,15 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 12
-  m_fontSizeBase: 12
+  m_fontSize: 16
+  m_fontSizeBase: 16
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
+  m_VerticalAlignment: 512
   m_textAlignment: 65535
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -3022,7 +3026,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: 10, y: 10, z: 10, w: 10}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -6922,6 +6926,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: Apply random color palette from the list of templates.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &175292138
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7097,6 +7103,8 @@ MonoBehaviour:
 
     (Change color by entering
     the hexadecimal color code)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!1 &180933778
 GameObject:
   m_ObjectHideFlags: 0
@@ -9874,6 +9882,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: The pattern of the neighboring cells.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &266853717
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10512,11 +10522,11 @@ MonoBehaviour:
   rangeText: {fileID: 892860614}
   neighborhoodDropdown: {fileID: 1381708337}
   changeState: 1
-  minRandState: 3
+  minRandState: 2
   maxRandState: 8
   changeThreshold: 1
   minThreshold: 1
-  maxThreshold: 13
+  maxThreshold: 20
   changeRange: 1
   minRange: 1
   maxRange: 5
@@ -14140,6 +14150,8 @@ MonoBehaviour:
 
     (Makes it more likely
     to get better grid settings)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &378793720
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15400,6 +15412,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: Back to the grid and simulation settings panel.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &422341149
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15690,141 +15704,6 @@ CanvasRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 425720477}
-  m_CullTransparentMesh: 1
---- !u!1 &426438285
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 426438286}
-  - component: {fileID: 426438288}
-  - component: {fileID: 426438287}
-  m_Layer: 5
-  m_Name: header
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &426438286
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426438285}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1846914576}
-  m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
-  m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &426438287
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426438285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 0
-  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
-  m_OnCullStateChanged:
-    m_PersistentCalls:
-      m_Calls: []
-  m_text: 
-  m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 46b2301d2cce2344cb187087329d7180, type: 2}
-  m_sharedMaterial: {fileID: -8338595920820702854, guid: 46b2301d2cce2344cb187087329d7180, type: 2}
-  m_fontSharedMaterials: []
-  m_fontMaterial: {fileID: 0}
-  m_fontMaterials: []
-  m_fontColor32:
-    serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
-  m_enableVertexGradient: 0
-  m_colorMode: 3
-  m_fontColorGradient:
-    topLeft: {r: 1, g: 1, b: 1, a: 1}
-    topRight: {r: 1, g: 1, b: 1, a: 1}
-    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
-    bottomRight: {r: 1, g: 1, b: 1, a: 1}
-  m_fontColorGradientPreset: {fileID: 0}
-  m_spriteAsset: {fileID: 0}
-  m_tintAllSprites: 0
-  m_StyleSheet: {fileID: 0}
-  m_TextStyleHashCode: -1183493901
-  m_overrideHtmlColors: 0
-  m_faceColor:
-    serializedVersion: 2
-    rgba: 4294967295
-  m_fontSize: 16
-  m_fontSizeBase: 16
-  m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
-  m_fontStyle: 1
-  m_HorizontalAlignment: 1
-  m_VerticalAlignment: 256
-  m_textAlignment: 65535
-  m_characterSpacing: 0
-  m_wordSpacing: 0
-  m_lineSpacing: 0
-  m_lineSpacingMax: 0
-  m_paragraphSpacing: 0
-  m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
-  m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
-  m_linkedTextComponent: {fileID: 0}
-  parentLinkedComponent: {fileID: 0}
-  m_enableKerning: 1
-  m_enableExtraPadding: 0
-  checkPaddingRequired: 0
-  m_isRichText: 1
-  m_parseCtrlCharacters: 1
-  m_isOrthographic: 1
-  m_isCullingEnabled: 0
-  m_horizontalMapping: 0
-  m_verticalMapping: 0
-  m_uvLineOffset: 0
-  m_geometrySortingOrder: 0
-  m_IsTextObjectScaleStatic: 0
-  m_VertexBufferAutoSizeReduction: 0
-  m_useMaxVisibleDescender: 1
-  m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
-  m_isUsingLegacyAnimationComponent: 0
-  m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_baseMaterial: {fileID: 0}
-  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
---- !u!222 &426438288
-CanvasRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 426438285}
   m_CullTransparentMesh: 1
 --- !u!1 &426702025
 GameObject:
@@ -16398,6 +16277,7 @@ GameObject:
   - component: {fileID: 443646474}
   - component: {fileID: 443646473}
   - component: {fileID: 443646472}
+  - component: {fileID: 443646475}
   m_Layer: 5
   m_Name: TooltipCanvas
   m_TagString: Untagged
@@ -16487,6 +16367,18 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 999
   m_TargetDisplay: 0
+--- !u!225 &443646475
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 443646470}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 0
+  m_BlocksRaycasts: 0
+  m_IgnoreParentGroups: 0
 --- !u!1 &451769026
 GameObject:
   m_ObjectHideFlags: 0
@@ -22439,6 +22331,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4aa46c4f83654af4285de73f36b77cf6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  canvasGroup: {fileID: 443646475}
   tooltip: {fileID: 1846914577}
 --- !u!4 &601349877
 Transform:
@@ -22873,6 +22766,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: Toggles tooltip buttons.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &621445664
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23144,6 +23039,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: The radius around each cell to detect neighbor cells.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &625660904
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -26715,6 +26612,8 @@ MonoBehaviour:
 
     (RESET
     CELLS AFTER CHANGING)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &716787244
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28115,8 +28014,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c3d47e8e28214c643b27572c4f4635cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  content: When on, neighborhood extends beyond the boundaries of the grid, calculating
-    its neighbors from the other side.
+  content: When on, neighborhood extends beyond the boundaries of the grid, wrapping
+    around it and calculating its neighbors from the other side.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &752282936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28259,6 +28160,8 @@ MonoBehaviour:
 
     (Only
     do it initially or after changing the grid size)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &753765544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37004,6 +36907,8 @@ MonoBehaviour:
     the simulation)
 
     (Pause: Stop simulating)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &1003481456
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -37882,6 +37787,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: Opens the color palette selection panel.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &1021722610
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -42501,6 +42408,8 @@ MonoBehaviour:
 
     (Might add the ability to save
     palettes later)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &1142401161
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58699,6 +58608,8 @@ MonoBehaviour:
 
     (click if grid colors
     look stuck or if you changed the number of states)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &1555006009
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -62596,6 +62507,8 @@ MonoBehaviour:
 
     (Click on the color to change
     it from the coloring panel)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &1651953961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63636,6 +63549,8 @@ MonoBehaviour:
     state.
 
 '
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &1695360079
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -66239,7 +66154,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Warping
+  m_text: Wrapping
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46b2301d2cce2344cb187087329d7180, type: 2}
   m_sharedMaterial: {fileID: -8338595920820702854, guid: 46b2301d2cce2344cb187087329d7180, type: 2}
@@ -69713,7 +69628,6 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 426438286}
   - {fileID: 72843452}
   m_Father: {fileID: 443646471}
   m_RootOrder: 0
@@ -69817,8 +69731,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 0ae2b74b1edd14bb18dd7b65ae916a54, type: 3}
-  m_Type: 1
+  m_Sprite: {fileID: 21300000, guid: 8f4439c132dd24d4c95e92ecf6600531, type: 3}
+  m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 4
@@ -70138,8 +70052,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -230, y: -179.99}
-  m_SizeDelta: {x: 0, y: 360}
+  m_AnchoredPosition: {x: -230, y: -191.86}
+  m_SizeDelta: {x: 0, y: 383.7163}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1863643235
 GameObject:
@@ -72982,6 +72896,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: Iterates the cells to the next state for 1 frame.
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &1933036094
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -76673,6 +76589,8 @@ MonoBehaviour:
 
     (Might
     not be accurate, limited by overall game performance)'
+  fadeInDuration: 0.2
+  fadeOutDuration: 0.2
 --- !u!114 &2030223172
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -80629,7 +80547,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Random Warp
+  m_text: Random Wrapping
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 46b2301d2cce2344cb187087329d7180, type: 2}
   m_sharedMaterial: {fileID: -8338595920820702854, guid: 46b2301d2cce2344cb187087329d7180, type: 2}
