@@ -178,15 +178,16 @@ public class ColorsPanel : MonoBehaviour
         {
             colors.Add(cell.color);
         }
-        ColorPalette p = ScriptableObject.CreateInstance<ColorPalette>();
-        p.Initialize("unnamed", colors.ToArray());
+        //ColorPalette p = ScriptableObject.CreateInstance<ColorPalette>();
+
+        currentPalette.Initialize("unnamed", colors.ToArray());
 
         //currentPalette = new ColorPalette("unnamed", colors.ToArray());
 
         //ColorArrayToPalette(colors.ToArray());
 
         SetFikiColors();
-        return p;
+        return currentPalette;
     }
 
     public Color HexToColor(string hex)

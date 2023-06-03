@@ -10681,7 +10681,7 @@ MonoBehaviour:
   maxRandState: 8
   changeThreshold: 1
   minThreshold: 1
-  maxThreshold: 40
+  maxThreshold: 30
   changeRange: 1
   minRange: 1
   maxRange: 5
