@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Forest
   m_EditorClassIdentifier: 
-  name: Forest
+  paletteName: Forest
   colors:
   - {r: 0.2509804, g: 0.23529413, b: 0.20392159, a: 1}
   - {r: 0.57254905, g: 0.6039216, b: 0.23529413, a: 1}

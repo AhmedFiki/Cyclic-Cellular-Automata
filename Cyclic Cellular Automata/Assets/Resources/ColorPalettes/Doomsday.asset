@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Doomsday
   m_EditorClassIdentifier: 
-  name: Doomsday
+  paletteName: Doomsday
   colors:
   - {r: 0.27450982, g: 0.4039216, b: 0.5882353, a: 1}
   - {r: 0.69411767, g: 0.48235297, b: 0.56078434, a: 1}

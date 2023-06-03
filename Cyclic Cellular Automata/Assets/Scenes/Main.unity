@@ -10681,10 +10681,12 @@ MonoBehaviour:
   maxRandState: 8
   changeThreshold: 1
   minThreshold: 1
-  maxThreshold: 30
+  maxThreshold: 20
+  thresholdLimit: 30
   changeRange: 1
   minRange: 1
   maxRange: 5
+  rangeLimit: 20
   changeNeighborhood: 1
   changeWarp: 1
   changeColor: 1
@@ -43045,7 +43047,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1372662609}
   m_Direction: 0
   m_MinValue: 1
-  m_MaxValue: 20
+  m_MaxValue: 30
   m_WholeNumbers: 1
   m_Value: 2
   m_OnValueChanged:
@@ -65012,7 +65014,7 @@ MonoBehaviour:
   - {fileID: 319670035}
   - {fileID: 116617560}
   - {fileID: 1915354539}
-  currentPalette: {fileID: 11400000, guid: 0b845ba96dc0ee042970471c0eb53171, type: 2}
+  currentPalette: {fileID: 11400000, guid: 0608b5e7118cdfd4e8f212d691c70620, type: 2}
   defaultPalette: {fileID: 11400000, guid: 1e2bcbc18ddd6454d9dda0d417caf170, type: 2}
   paletteDropdown: {fileID: 1605663780}
   loadingGif: {fileID: 1657196887}

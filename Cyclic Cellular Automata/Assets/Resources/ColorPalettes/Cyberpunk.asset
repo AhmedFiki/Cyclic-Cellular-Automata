@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Cyberpunk
   m_EditorClassIdentifier: 
-  name: Cyberpunk
+  paletteName: Cyberpunk
   colors:
   - {r: 0.043137256, g: 0.58431375, b: 0.62352943, a: 1}
   - {r: 0.92549026, g: 0.92549026, b: 0.9294118, a: 1}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: ShadesOfGray
   m_EditorClassIdentifier: 
-  name: ShadesOfGray
+  paletteName: ShadesOfGray
   colors:
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0.1509434, g: 0.1509434, b: 0.1509434, a: 1}

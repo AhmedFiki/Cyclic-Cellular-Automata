@@ -84,8 +84,8 @@ public class MyGrid : MonoBehaviour
     public int minThreshold = 1;
 
     [Range(1, 30)]
-    public int maxThreshold = 30;
-
+    public int maxThreshold = 20;
+    public int thresholdLimit = 30;
     public bool changeRange;
 
     [Range(1, 20)]
@@ -93,7 +93,7 @@ public class MyGrid : MonoBehaviour
 
     [Range(1, 20)]
     public int maxRange = 20;
-
+    public int rangeLimit = 20;
     public bool changeNeighborhood;
     public bool changeWarp;
     public bool changeColor;
@@ -130,9 +130,9 @@ public class MyGrid : MonoBehaviour
 
         wantedSize = size;
         statesSlider.value = maxState + 1;
-        thresholdSlider.maxValue = maxThreshold;
+        thresholdSlider.maxValue = thresholdLimit;
         thresholdSlider.value = threshold;
-        //rangeSlider.maxValue = maxRange;
+        rangeSlider.maxValue = rangeLimit;
         rangeSlider.value = range;
         neighborhoodDropdown.value = neighborhood;
         warpToggle.isOn = warp;

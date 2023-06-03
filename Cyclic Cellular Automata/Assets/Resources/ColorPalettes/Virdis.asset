@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Virdis
   m_EditorClassIdentifier: 
-  name: Virdis
+  paletteName: Virdis
   colors:
   - {r: 0.26666668, g: 0.003921569, b: 0.32941177, a: 1}
   - {r: 0.2784314, g: 0.17254902, b: 0.4784314, a: 1}
@@ -23,11 +23,11 @@ MonoBehaviour:
   - {r: 0.3803922, g: 0.78823537, b: 0.37647063, a: 1}
   - {r: 0.6901961, g: 0.86666673, b: 0.19215688, a: 1}
   hexCodes:
+  - '#48FB00'
+  - '#31C110'
+  - '#198908'
+  - '#0B5C04'
+  - '#021E07'
   - '#000000'
-  - '#262626'
-  - '#414141'
-  - '#525252'
-  - '#7D7D7D'
-  - '#B2B2B2'
-  - '#C8C8C8'
-  - '#EEEEEE'
+  - '#023D07'
+  - '#0B6E04'

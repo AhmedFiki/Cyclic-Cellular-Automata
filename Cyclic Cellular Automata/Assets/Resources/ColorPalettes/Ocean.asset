@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Ocean
   m_EditorClassIdentifier: 
-  name: Ocean
+  paletteName: Ocean
   colors:
   - {r: 0, g: 0.13725491, b: 0.14117648, a: 1}
   - {r: 0, g: 0.2509804, b: 0.2901961, a: 1}
@@ -23,11 +23,11 @@ MonoBehaviour:
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0, b: 0, a: 1}
   hexCodes:
-  - '#38261A'
-  - '#C4996E'
-  - '#9F7755'
-  - '#6F4C34'
-  - '#110D0C'
-  - '#CB9054'
-  - '#FBDEB1'
-  - '#C3AE96'
+  - '#002324'
+  - '#00404A'
+  - '#008B92'
+  - '#9FCAD6'
+  - '#FFFFFF'
+  - '#D9E0E9'
+  - '#000000'
+  - '#000000'

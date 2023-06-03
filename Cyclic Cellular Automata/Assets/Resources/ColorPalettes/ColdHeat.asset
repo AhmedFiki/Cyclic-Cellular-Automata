@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: ColdHeat
   m_EditorClassIdentifier: 
-  name: ColdHeat
+  paletteName: ColdHeat
   colors:
   - {r: 0.17254902, g: 0.5137255, b: 0.77647066, a: 1}
   - {r: 0.22352943, g: 0.65882355, b: 0.94117653, a: 1}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Beach
   m_EditorClassIdentifier: 
-  name: Beach
+  paletteName: Beach
   colors:
   - {r: 0, g: 0.13725491, b: 0.14117648, a: 1}
   - {r: 0, g: 0.2509804, b: 0.2901961, a: 1}

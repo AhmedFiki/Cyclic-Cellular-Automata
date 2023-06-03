@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: HeatMap
   m_EditorClassIdentifier: 
-  name: HeatMap
+  paletteName: Heatmap
   colors:
   - {r: 0.027450982, g: 0, b: 1, a: 1}
   - {r: 0.08235294, g: 1, b: 0.011764707, a: 1}

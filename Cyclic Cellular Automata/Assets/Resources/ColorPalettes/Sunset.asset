@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Sunset
   m_EditorClassIdentifier: 
-  name: Sunset
+  paletteName: Sunset
   colors:
   - {r: 1, g: 0.7294118, b: 0.019607844, a: 1}
   - {r: 0.9843138, g: 0.6313726, b: 0.007843138, a: 1}
@@ -23,11 +23,11 @@ MonoBehaviour:
   - {r: 0.9803922, g: 0.04705883, b: 0.03529412, a: 1}
   - {r: 0.8018868, g: 0, b: 0.44304267, a: 1}
   hexCodes:
-  - '#440154'
-  - '#472C7A'
-  - '#3B518B'
-  - '#2C718E'
-  - '#21918D'
-  - '#29AE80'
-  - '#61C960'
-  - '#B0DD31'
+  - '#FFBA05'
+  - '#FBA102'
+  - '#EF8000'
+  - '#E04D00'
+  - '#C80003'
+  - '#E00001'
+  - '#FA0C09'
+  - '#CC0071'

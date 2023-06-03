@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: 8BitGreen
   m_EditorClassIdentifier: 
-  name: 8BitGreen
+  paletteName: 8BitGreen
   colors:
   - {r: 0.28235295, g: 0.9843138, b: 0, a: 1}
   - {r: 0.19215688, g: 0.7568628, b: 0.0627451, a: 1}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Pinky
   m_EditorClassIdentifier: 
-  name: Pinky
+  paletteName: Pinky
   colors:
   - {r: 0.9803922, g: 0.73333335, b: 0.81568635, a: 1}
   - {r: 0.9568628, g: 0.56078434, b: 0.69411767, a: 1}
@@ -23,11 +23,11 @@ MonoBehaviour:
   - {r: 0.7568628, g: 0.09019608, b: 0.36078432, a: 1}
   - {r: 0.6745098, g: 0.078431375, b: 0.34117648, a: 1}
   hexCodes:
-  - '#440154'
-  - '#472C7A'
-  - '#3B518B'
-  - '#2C718E'
-  - '#21918D'
-  - '#29AE80'
-  - '#61C960'
-  - '#B0DD31'
+  - '#FABBD0'
+  - '#F48FB1'
+  - '#F06291'
+  - '#EC407A'
+  - '#EB1E63'
+  - '#D91961'
+  - '#C1175C'
+  - '#AC1457'

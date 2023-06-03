@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f2015541077b0544090eb535a51c545b, type: 3}
   m_Name: Neon
   m_EditorClassIdentifier: 
-  name: Neon
+  paletteName: neon
   colors:
   - {r: 0, g: 0, b: 0, a: 1}
   - {r: 0, g: 0.047058824, b: 0.047058824, a: 1}
