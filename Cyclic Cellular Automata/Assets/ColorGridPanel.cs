@@ -18,8 +18,12 @@ public class ColorGridPanel : MonoBehaviour
     public void PressedColor(Color color)
     {
         colorPanel.colorCells[currentStateCell].InputColor(color);
+        colorPanel.UpdateCurrentPalette();
+
         HideGrid();
         colorPanel.grid.ResetCells();
+
+
     }
     public void HideGrid()
     {

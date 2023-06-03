@@ -8,7 +8,7 @@ using UnityEngine;
 public class ColorPalette : ScriptableObject
 {
     [SerializeField]
-    private string name;
+    private string paletteName;
 
     [SerializeField]
     private Color[] colors = new Color[8];
@@ -23,7 +23,13 @@ public class ColorPalette : ScriptableObject
     }
     public ColorPalette(string name, Color[] colors)
     {
-        this.name = name;
+        paletteName = name;
+        this.colors = colors;
+        GenerateHexCodes();
+    }  
+    public ColorPalette(Color[] colors)
+    {
+        paletteName = "un_named";
         this.colors = colors;
         GenerateHexCodes();
     }
@@ -39,7 +45,13 @@ public class ColorPalette : ScriptableObject
             hexCodes[i] = "#" + ColorUtility.ToHtmlStringRGB(colors[i]);
         }
     }
+    public void Initialize(string n, Color[] c)
+    {
+        paletteName = n;
+        colors = c;
+        GenerateHexCodes();
 
+    }
     public Color this[int index]
     {
         get { return colors[index]; }
@@ -62,7 +74,10 @@ public class ColorPalette : ScriptableObject
     {
         return colors;
     }
-
+    public string GetName()
+    {
+        return name;
+    }
     public Color[] PopulateColors()
     {
         Color[] colors = new Color[hexCodes.Length];
@@ -83,16 +98,17 @@ public class ColorPalette : ScriptableObject
         return colors;
     }
 
+
     public ColorPaletteSerializable ToSerializable()
     {
-        ColorPaletteSerializable colorPaletteSerializable = new ColorPaletteSerializable(name, hexCodes);
+        ColorPaletteSerializable colorPaletteSerializable = new ColorPaletteSerializable(paletteName, hexCodes);
 
         return colorPaletteSerializable;
     }
 
     public void SerializableToSO(ColorPaletteSerializable c)
     {
-        this.name = c.GetName();
+        paletteName = c.GetName();
         this.hexCodes = c.GetHexCodes();
         this.colors = PopulateColors();
     }

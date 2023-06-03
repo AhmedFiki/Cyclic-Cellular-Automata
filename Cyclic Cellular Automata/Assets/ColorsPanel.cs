@@ -41,14 +41,13 @@ public class ColorsPanel : MonoBehaviour
     {
         PopulateColorPalettesList();
         PopulatePaletteDropdown();
-        //LoadUpColorPalette(defaultPalette);
         RandomPalette();
         paletteDropdown.onValueChanged.AddListener(OnDropdownValueChanged);
         Debug.Log("Data Path: " + Application.persistentDataPath);
 
 
     }
-
+ 
     public void ShowLoadingGif()
     {
         loadingGif.SetActive(true);
@@ -68,7 +67,6 @@ public class ColorsPanel : MonoBehaviour
     {
 
         int val = Random.Range(0, paletteDropdown.options.Count);
-        //Debug.Log(paletteDropdown.options.Count);
         OnDropdownValueChanged(val);
     }
     public void TogglePanel()
@@ -105,7 +103,7 @@ public class ColorsPanel : MonoBehaviour
         paletteDropdown.options.Clear();
         foreach (var palette in colorPalettes)
         {
-            paletteDropdown.options.Add(new TMP_Dropdown.OptionData() { text = palette.name });
+            paletteDropdown.options.Add(new TMP_Dropdown.OptionData() { text = palette.GetName()});
         }
         if (paletteDropdown.options.Count > 0)
         {
@@ -118,7 +116,7 @@ public class ColorsPanel : MonoBehaviour
     public void OnDropdownValueChanged(int index)
     {
         string selectedOption = paletteDropdown.options[index].text;
-        //Debug.Log("Selected option: " + selectedOption);
+
         LoadUpColorPalette(selectedOption);
         SetPaletteDropdownSelection(index);
 
@@ -148,15 +146,25 @@ public class ColorsPanel : MonoBehaviour
             colorCells[i].SetCell(palette[i], palette.GetHexCode(i));
 
         }
-        currentPalette = palette;
+        UpdateCurrentPalette();
+        grid.ResetCells();
+    }
+    public void SetFikiColors()
+    {
+
         textColorAnimator.SetPalette(currentPalette);
 
-        grid.ResetCells();
+    }
+    public ColorPalette ColorArrayToPalette(Color[] colors)
+    {
+        ColorPalette palette = new ColorPalette("unnamed",colors);
+
+        return palette;
     }
 
     public void LoadUpColorPalette(string paletteName)
     {
-        ColorPalette paletteObject = colorPalettes.Find(x => x.name == paletteName);
+        ColorPalette paletteObject = colorPalettes.Find(x => x.GetName() == paletteName);
 
         LoadUpColorPalette(paletteObject);
     }
@@ -164,16 +172,21 @@ public class ColorsPanel : MonoBehaviour
 
     public ColorPalette UpdateCurrentPalette()
     {
-        Color[] colors = new Color[colorCells.Length];
+        List<Color> colors = new List<Color>();
 
-        for (int i = 0; i < colorCells.Length; i++)
+        foreach (var cell in colorCells)
         {
-            colors[i] = colorCells[i].color;
-
+            colors.Add(cell.color);
         }
-        currentPalette = new ColorPalette("CurrentPalette", colors);
+        ColorPalette p = ScriptableObject.CreateInstance<ColorPalette>();
+        p.Initialize("unnamed", colors.ToArray());
 
-        return currentPalette;
+        //currentPalette = new ColorPalette("unnamed", colors.ToArray());
+
+        //ColorArrayToPalette(colors.ToArray());
+
+        SetFikiColors();
+        return p;
     }
 
     public Color HexToColor(string hex)
@@ -182,7 +195,6 @@ public class ColorsPanel : MonoBehaviour
         Color color;
         if (ColorUtility.TryParseHtmlString(hex, out color))
         {
-            // Debug.Log("Color: " + color);
         }
         else
         {

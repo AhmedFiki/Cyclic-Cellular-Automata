@@ -4,7 +4,6 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static UnityEditor.PlayerSettings;
 
 public class MyGrid : MonoBehaviour
 {
@@ -37,7 +36,7 @@ public class MyGrid : MonoBehaviour
     public bool play = false;
     public float playSpeed = 0.5f;
     public Button playButton;
-    public Camera camera;
+    public Camera cam;
 
     public Color[] colorArray;
 
@@ -67,6 +66,8 @@ public class MyGrid : MonoBehaviour
 
     public TMP_Dropdown neighborhoodDropdown;
 
+    public Button generateGridButton;
+
     [Header("Random")]
 
     public bool changeState;
@@ -82,8 +83,8 @@ public class MyGrid : MonoBehaviour
     [Range(1, 20)]
     public int minThreshold = 1;
 
-    [Range(1, 20)]
-    public int maxThreshold = 20;
+    [Range(1, 30)]
+    public int maxThreshold = 30;
 
     public bool changeRange;
 
@@ -107,7 +108,7 @@ public class MyGrid : MonoBehaviour
     private void Start()
     {
         GenerateCellsOneTime();
-        camera = Camera.main;
+        cam = Camera.main;
         //cells = new Cell[size.x, size.y];
         neighborhoodCount = CalculateNeighborCount(range);
 
@@ -129,7 +130,9 @@ public class MyGrid : MonoBehaviour
 
         wantedSize = size;
         statesSlider.value = maxState + 1;
+        thresholdSlider.maxValue = maxThreshold;
         thresholdSlider.value = threshold;
+        //rangeSlider.maxValue = maxRange;
         rangeSlider.value = range;
         neighborhoodDropdown.value = neighborhood;
         warpToggle.isOn = warp;
@@ -180,6 +183,12 @@ public class MyGrid : MonoBehaviour
             StartCoroutine(SkipStableGrids());
         }
     }
+
+    public void OnGridSizeSliderMove()
+    {
+        generateGridButton.interactable = true;
+    }
+
     IEnumerator SkipStableGrids()
     {
 
@@ -853,6 +862,7 @@ public class MyGrid : MonoBehaviour
                 int randomNumber = Random.Range(0, maxState + 1);
 
                 cells[i, j].SetColorPalette(colorArray);
+                cells[i,j].SetCellScale(cellSize);
 
                 cells[i, j].SetState(randomNumber);
                 //Debug.Log(randomNumber);
@@ -863,6 +873,7 @@ public class MyGrid : MonoBehaviour
     }
     public void GenerateCells()
     {
+        generateGridButton.interactable = false;
         Debug.Log("Generated cells");
         stableState = false;
         size = wantedSize;
@@ -1160,8 +1171,8 @@ public class MyGrid : MonoBehaviour
     {
         float xOffset = size.x * 0.4f;
 
-        camera.orthographicSize = size.x / 2 + 5;
-        camera.transform.position = new Vector2(size.x / 2 + xOffset, size.y / 2);
+        cam.orthographicSize = size.x / 2 + 5;
+        cam.transform.position = new Vector2(size.x / 2 + xOffset, size.y / 2);
 
     }
     public void UpdateCamera()
@@ -1171,10 +1182,10 @@ public class MyGrid : MonoBehaviour
         float cameraSize = Mathf.Max(size.x, size.y) * 0.5f + 1;
         Vector3 cameraPosition = new Vector3(size.x * 0.5f, size.x * 0.5f, -10f);
 
-        camera.orthographicSize = cameraSize;
-        camera.transform.position = cameraPosition;
-        camera.transform.GetComponent<ObjectTween>().CalculateCamPosition(size);
-        camera.transform.GetComponent<ObjectTween>().TeleportToHiddenPosition();
+        cam.orthographicSize = cameraSize;
+        cam.transform.position = cameraPosition;
+        cam.transform.GetComponent<ObjectTween>().CalculateCamPosition(size);
+        cam.transform.GetComponent<ObjectTween>().TeleportToHiddenPosition();
 
     }
 

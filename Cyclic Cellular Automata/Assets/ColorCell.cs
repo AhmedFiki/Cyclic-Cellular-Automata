@@ -94,6 +94,7 @@ public class ColorCell : MonoBehaviour
 
         }
         UpdateCell();
+        panel.PressedColor(c);
 
 
     }

@@ -10658,7 +10658,7 @@ MonoBehaviour:
   play: 0
   playSpeed: 0.1
   playButton: {fileID: 2132362946}
-  camera: {fileID: 519420031}
+  cam: {fileID: 0}
   colorArray: []
   testCellPos: {x: 4, y: 4}
   colorsPanel: {fileID: 1714190099}
@@ -10675,12 +10675,13 @@ MonoBehaviour:
   rangeSlider: {fileID: 42732743}
   rangeText: {fileID: 892860614}
   neighborhoodDropdown: {fileID: 1381708337}
+  generateGridButton: {fileID: 1532448671}
   changeState: 1
   minRandState: 2
   maxRandState: 8
   changeThreshold: 1
   minThreshold: 1
-  maxThreshold: 20
+  maxThreshold: 40
   changeRange: 1
   minRange: 1
   maxRange: 5
@@ -32660,7 +32661,19 @@ MonoBehaviour:
   m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 294096431}
+        m_TargetAssemblyTypeName: MyGrid, Assembly-CSharp
+        m_MethodName: OnGridSizeSliderMove
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!224 &853366782
 RectTransform:
   m_ObjectHideFlags: 0
@@ -64999,7 +65012,7 @@ MonoBehaviour:
   - {fileID: 319670035}
   - {fileID: 116617560}
   - {fileID: 1915354539}
-  currentPalette: {fileID: 0}
+  currentPalette: {fileID: 11400000, guid: 0b845ba96dc0ee042970471c0eb53171, type: 2}
   defaultPalette: {fileID: 11400000, guid: 1e2bcbc18ddd6454d9dda0d417caf170, type: 2}
   paletteDropdown: {fileID: 1605663780}
   loadingGif: {fileID: 1657196887}
@@ -78095,7 +78108,7 @@ GameObject:
   - component: {fileID: 2049187735}
   - component: {fileID: 2049187736}
   m_Layer: 0
-  m_Name: Square
+  m_Name: Background
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
