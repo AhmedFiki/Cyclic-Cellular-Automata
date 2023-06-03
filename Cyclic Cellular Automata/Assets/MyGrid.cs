@@ -102,7 +102,7 @@ public class MyGrid : MonoBehaviour
 
     public Vector2Int maxSize;
 
-
+    public TMP_InputField gridSizeInputField;
 
     private void Start()
     {
@@ -124,8 +124,9 @@ public class MyGrid : MonoBehaviour
 
     public void UpdateUIElements()
     {
-
         gridSizeSlider.value = size.x;
+        gridSizeText.text = (int)size.x + "x" + (int)size.y;
+
         wantedSize = size;
         statesSlider.value = maxState + 1;
         thresholdSlider.value = threshold;
@@ -832,9 +833,8 @@ public class MyGrid : MonoBehaviour
 
             }
         }
-
-
     }
+ 
     public void ResetCells()
     {
         if (currentSize != size)
@@ -1057,6 +1057,33 @@ public class MyGrid : MonoBehaviour
     {
         wantedSize = new Vector2Int((int)gridSize, (int)gridSize);
         gridSizeText.text = (int)gridSize + "x" + (int)gridSize;
+    }
+    public void SetGridSizeFromInputField()
+    {
+        if(gridSizeInputField.text == "")
+        {
+
+            return;
+        }
+        int inputValue = int.Parse(gridSizeInputField.text);
+
+
+        //Debug.Log(1 + " " + inputValue);
+
+        if (inputValue > gridSizeSlider.maxValue)
+        {
+            inputValue =(int) gridSizeSlider.maxValue;
+        }else if (inputValue < gridSizeSlider.minValue )
+        {
+            inputValue =(int) gridSizeSlider.minValue;
+        }
+        //Debug.Log(2 + " " + inputValue);
+
+        wantedSize = new Vector2Int(inputValue, inputValue);
+        gridSizeText.text = (int)inputValue + "x" + (int)inputValue;
+        gridSizeSlider.value = inputValue;
+        gridSizeInputField.text = "";
+
     }
     public void SetCellSizeFromSlider(float cs)
     {
